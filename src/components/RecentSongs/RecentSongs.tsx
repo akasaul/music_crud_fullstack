@@ -5,6 +5,7 @@ import { Grid, Spinner } from "theme-ui";
 import SongCard from "../SongCard";
 import { fetchRecentRequest, reset } from "../../app/features/song/songSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Song } from "../../app/types/song";
 
 const RecentSongs = () => {
   const RecentGrid = styled(Grid)`
@@ -61,28 +62,18 @@ const RecentSongs = () => {
         ) : (
           isSuccess &&
           fetchRecentState === "FETCH_RECENT" &&
-          recents?.map(
-            (recent: {
-              id: string;
-              artist: string;
-              imageUrl: string;
-              title: string;
-              album: string;
-              duration: string;
-              genre: string;
-            }) => (
-              <SongCard
-                key={recent.id}
-                id={recent.id}
-                artist={recent.artist}
-                imageUrl={recent.imageUrl}
-                title={recent.title}
-                album={recent.album}
-                duration={recent.duration}
-                genre={recent.genre}
-              />
-            ),
-          )
+          recents?.map((recent: Song) => (
+            <SongCard
+              key={recent.id}
+              id={recent.id}
+              artist={recent.artist}
+              imageUrl={recent.coverImg}
+              title={recent.title}
+              album={recent.album}
+              duration={recent.duration}
+              genre={recent.genre}
+            />
+          ))
         )}
       </RecentGrid>
     </Flex>

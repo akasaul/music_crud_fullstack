@@ -5,6 +5,8 @@ import styled from "@emotion/styled";
 import { ThemeProvider } from "@emotion/react";
 import theme from "./theme";
 import useAuthStatus from "./hooks/useAuthStatus";
+import "./App.css";
+
 import {
   color,
   background,
@@ -18,6 +20,8 @@ import {
   FlexboxProps,
 } from "styled-system";
 import { useDispatch } from "react-redux";
+import Sidebar from "./components/Sidebar";
+import SongPlayerFooter from "./components/SongPlayerFooter/SongPlayerFooter";
 
 const App: React.FC = () => {
   const { isLoggedIn } = useAuthStatus();
@@ -55,11 +59,13 @@ const App: React.FC = () => {
               paddingInline: "10px",
             }}
           >
+            <Sidebar />
             <Routes>
               {routes.map((route, index) => (
                 <Route key={index} path={route.path} element={route.element} />
               ))}
             </Routes>
+            <SongPlayerFooter />
           </Container>
         </Suspense>
       </Router>

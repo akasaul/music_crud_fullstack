@@ -1,11 +1,11 @@
 import { Box } from "rebass";
-// import FavoritesSection from "../components/FavoritesSection/FavoritesSection";
 import styled from "@emotion/styled";
 import { color } from "styled-system";
 import "../../App.css";
 import Navbar from "../../components/Navbar/Navbar";
 import RecentSongs from "../../components/RecentSongs/RecentSongs";
-// import HiphopSection from "../components/HIphopSection/HipHopSection";
+import FavoritesSection from "../../components/FavoritesSection/FavoritesSection";
+import HiphopSection from "../../components/HiphopSection/HipHopSection";
 
 const Home = () => {
   const Home = styled(Box)`
@@ -26,8 +26,8 @@ const Home = () => {
     >
       <Navbar />
       <RecentSongs />
-      {/* <FavoritesSection /> */}
-      {/* <HiphopSection /> */}
+      <FavoritesSection />
+      <HiphopSection />
     </Home>
   );
 };
