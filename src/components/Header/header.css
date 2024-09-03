@@ -1,0 +1,11 @@
+.header_btn {
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.header_btn:hover {
+  background: #303030;
+}

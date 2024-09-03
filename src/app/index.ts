@@ -1,19 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
-import { watchIncrement } from "./sagas/counter";
-import counterReducer from "./features/counter/counterSlice";
+import authReducer from "./features/auth/authSlice";
+import songReducer from "./features/song/songSlice";
+import rootSaga from "./sagas/rootSaga";
 
-const sagaMiddleware = createSagaMiddleware();
+const saga = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    auth: authReducer,
+    song: songReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sagaMiddleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(saga),
 });
 
-sagaMiddleware.run(watchIncrement);
+saga.run(rootSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
