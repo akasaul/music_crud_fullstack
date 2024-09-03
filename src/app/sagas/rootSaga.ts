@@ -9,6 +9,7 @@ import favSong from "./song/favSongSaga";
 import fetchRecentSaga from "./song/fetchRecentSaga";
 import getAllSaga from "./song/getAllSaga";
 import searchSaga from "./song/searchSaga";
+import getByGenreSaga from "./song/getByGenre";
 
 export default function* rootSaga() {
   yield all([
@@ -21,6 +22,7 @@ export default function* rootSaga() {
     favSong(),
     fetchRecentSaga(),
     getAllSaga(),
-    searchSaga(),
+    // searchSaga(),
+    getByGenreSaga(),
   ]);
 }

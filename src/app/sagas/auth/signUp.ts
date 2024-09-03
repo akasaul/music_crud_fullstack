@@ -6,24 +6,19 @@ import {
 } from "../../features/auth/authSlice";
 import axios from "axios";
 import { AuthState, AuthResponse } from "./types";
+import { signUpUser } from "../../../services/api/user.service";
 
 function* workAuth() {
   try {
-    const { inputName, inputPassword, inputEmail }: AuthState = yield select(
-      (state: { auth: AuthState }) => state.auth,
-    );
+    const {
+      inputName: name,
+      inputPassword: password,
+      inputEmail: email,
+    }: AuthState = yield select((state: { auth: AuthState }) => state.auth);
 
-    const response: AuthResponse = yield call(() =>
-      axios
-        .post("http://localhost:3000/auth/signup", {
-          email: inputEmail,
-          password: inputPassword,
-          name: inputName,
-        })
-        .then((res) => res.data),
-    );
+    const { data } = yield call(() => signUpUser({ name, email, password }));
 
-    yield put(signUpSuccess(response.user));
+    yield put(signUpSuccess(data.user));
   } catch (err: any) {
     // Dispatch failure action with the error message
     yield put(signUpFailure(err.message));

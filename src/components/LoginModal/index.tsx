@@ -1,33 +1,56 @@
 import styled from "@emotion/styled";
 import { Box, Flex, Text } from "rebass";
-import { FaSpotify } from 'react-icons/fa';
-import { fontSize, maxWidth, position, width,
-  variant, color } from "styled-system";
-import { MdOutlineAccountCircle, MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { useRef, useState} from "react";
+import { FaSpotify } from "react-icons/fa";
+import {
+  fontSize,
+  maxWidth,
+  position,
+  width,
+  variant,
+  color,
+} from "styled-system";
+import {
+  MdOutlineAccountCircle,
+  MdOutlineEmail,
+  MdVisibility,
+  MdVisibilityOff,
+} from "react-icons/md";
+import { useRef, useState } from "react";
 import { Input, Spinner } from "theme-ui";
 import BaseInputWrapper from "../BaseInput";
 import SubmitButton from "../Buttons/SubmitButton";
 import TextButton from "../Buttons/TextButton";
-import { setUserData, signInRequest, signUpRequest, reset } from "../../app/features/auth/authSlice";
+import {
+  setUserData,
+  signInRequest,
+  signUpRequest,
+  reset,
+} from "../../app/features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Label, Checkbox } from "theme-ui";
+import { useForm } from "react-hook-form";
+import {
+  LoginBody,
+  loginSchema,
+  SignUpBody,
+  signUpSchema,
+} from "../../lib/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const LoginModal = ({isOpen, setIsOpen, isLogin, setIsLogin}) => {
-
+const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }) => {
   const BaseInput = styled(Input)`
-  ${variant}
-  ${color}
+    ${variant}
+    ${color}
   ${fontSize}
   &:focus {
-    outline: none;
-    border: none;
-  }
-`;
+      outline: none;
+      border: none;
+    }
+  `;
 
-const Container = styled(Flex)`
-  gap: 10px;
-`;
+  const Container = styled(Flex)`
+    gap: 10px;
+  `;
 
   const Overlay = styled(Box)`
     position: fixed;
@@ -40,26 +63,26 @@ const Container = styled(Flex)`
     filter: blur(5px);
     z-index: 1;
   `;
-  
+
   const Modal = styled(Box)`
-      ${position}
-      min-width: 300px;
-      background: #000;
-      position: fixed;
-      gap: 20px;
-      z-index: 99;
-      top: 0;
-      bottom: 0;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;   
-      align-items: center;
-      overflow-y: scroll;
-      ::-webkit-scrollbar { 
-        display: none;  /* Safari and Chrome */
-      }
-      -ms-overflow-style: none;  /* Internet Explorer 10+ */
-      scrollbar-width: none;  /* Firefox */  
+    ${position}
+    min-width: 300px;
+    background: #000;
+    position: fixed;
+    gap: 20px;
+    z-index: 99;
+    top: 0;
+    bottom: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+    }
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
   `;
 
   const Header = styled(Box)`
@@ -72,7 +95,6 @@ const Container = styled(Flex)`
     padding: 24px;
   `;
 
-
   const HeaderText = styled.h2`
     ${fontSize}
     ${width}
@@ -80,7 +102,6 @@ const Container = styled(Flex)`
     text-align: center;
     color: white;
   `;
-
 
   const HeaderSub = styled.h2`
     ${fontSize}
@@ -92,285 +113,414 @@ const Container = styled(Flex)`
   const InputContainer = styled(Flex)`
     ${maxWidth}
     gap: 15px;
-  `
+  `;
   const BottomText = styled(Text)`
     ${color}
   `;
 
+  const {
+    // handleSubmit,
+    handleSubmit,
+    formState: { errors },
+    register,
+  } = useForm<LoginBody>({
+    resolver: zodResolver(loginSchema),
+    // defaultValues,
+  });
 
-  const emailRef = useRef();
-  const nameRef = useRef();
-  const passwordRef = useRef();
-  
+  const {
+    handleSubmit: handleSignUp,
+    formState: { errors: signUpErrors },
+    register: registerSignup,
+  } = useForm<SignUpBody>({
+    resolver: zodResolver(signUpSchema),
+    // defaultValues,
+  });
+
   // Show Password
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
 
-  const { isLoading, isError, isSuccess, erroMsg } = useSelector(state => state.auth);
+  const { isLoading, isError, isSuccess } = useSelector((state) => state.auth);
 
   // On Form Submission
-  const handleSubmit = async (e) => {
+  // const handleSubmits = async (e) => {
+  //   e.preventDefault();
+  //
+  //   dispatch(
+  //     setUserData({
+  //       email: emailRef.current.value,
+  //       name: nameRef.current?.value,
+  //       password: passwordRef.current.value,
+  //     }),
+  //   );
+  //
+  //   // Check if req is Sign in or Sign up
+  //   if (isLogin) {
+  //     // Clearing previous state
+  //     dispatch(reset());
+  //
+  //     // TODO: Login request
+  //     dispatch(signInRequest());
+  //   } else {
+  //     // Clearing Prevois State
+  //     dispatch(reset());
+  //
+  //     // Sign up request
+  //     dispatch(signUpRequest());
+  //   }
+  // };
 
-    e.preventDefault(); 
-
-    dispatch(setUserData({email: emailRef.current.value, name: nameRef.current?.value, password: passwordRef.current.value}));
-    
-    // Check if req is Sign in or Sign up
-    if(isLogin) {
-      // Clearing previous state 
-      dispatch(reset());
-
-      // TODO: Login request
-      dispatch(signInRequest());
-    } else {
-      // Clearing Prevois State 
-      dispatch(reset());
-
-      // Sign up request
-      dispatch(signUpRequest());
-    }
-  }
-  
-  if(!isOpen) {
+  if (!isOpen) {
     return;
   }
 
-
-  if(isSuccess) {
+  if (isSuccess) {
     return;
   }
+
+  const onSubmit = ({ email, password }: LoginBody) => {
+    dispatch(
+      setUserData({
+        email,
+        name: "",
+        password,
+      }),
+    );
+    dispatch(signInRequest());
+  };
+
+  const onSignUpSubmit = ({ email, password, name }: SignUpBody) => {
+    dispatch(
+      setUserData({
+        email,
+        name,
+        password,
+      }),
+    );
+    dispatch(signUpRequest());
+  };
 
   return (
     <>
-    <Overlay>
-    </Overlay>
-    
+      <Overlay></Overlay>
+
       <Modal
-        left={['20px',   '20px', '40px']}
-        right={['20px', '20px', '40px']}
-        maxWidth={['auto', 'auto', 'auto', '800px']}
+        left={["20px", "20px", "40px"]}
+        right={["20px", "20px", "40px"]}
+        maxWidth={["auto", "auto", "auto", "800px"]}
         sx={{
-          marginInline: 'auto'
+          marginInline: "auto",
         }}
       >
-        <Header
-          as='header'
-          fontSize={['28px']}
-        >
-        <FaSpotify 
-          color='white'
-          size={45}
-        />
-        Nikofy
+        <Header as="header" fontSize={["28px"]}>
+          <FaSpotify color="white" size={45} />
+          Nikofy
         </Header>
 
         <HeaderText
-          maxWidth={['250px', '250px', '350px']}
-          fontSize={['24px', '24px', '32px']}
+          maxWidth={["250px", "250px", "350px"]}
+          fontSize={["24px", "24px", "32px"]}
         >
           Start listening with a free Nikofy account
         </HeaderText>
 
-        {
-          !isLogin &&
-            <HeaderSub
-              fontSize={'15px'}
+        {!isLogin && (
+          <HeaderSub fontSize={"15px"}>
+            (Just enter unique fake email)
+          </HeaderSub>
+        )}
+
+        {isLogin && (
+          <InputContainer flexDirection="column" alignItems="center">
+            <Container
+              as="form"
+              onSubmit={handleSubmit(onSubmit)}
+              flexDirection="column"
+              autoComplete="false"
+              autoCorrect="false"
             >
-              (Just enter unique fake email)
-            </HeaderSub>
-        }
-        
-
-        <InputContainer
-          flexDirection='column'  
-          alignItems='center'
-        >
-          
-        <Container
-          as='form'
-          onSubmit={handleSubmit}
-          flexDirection='column'
-          autoComplete='false'
-          autoCorrect='false'
-        >
-            <BaseInputWrapper>
-
-                <BaseInput 
-                  ref={emailRef}
-                  placeholder={'Email'}
-                  name={'email'}
-                  variant='primary'
-                  fontSize={['xs', 'xs', 'sm']}
-                />
-                <MdOutlineEmail 
-                  size={28}
-                  color='#7C7C7C'
-                />
-
-            </BaseInputWrapper>
-
-
-            {
-              !isLogin &&
               <BaseInputWrapper>
-              
-                <BaseInput 
-                  ref={nameRef}
-                  placeholder={'What should we call you'}
-                  name={'name'}
-                  variant='primary'
-                  fontSize={['xs', 'xs', 'sm']}
+                <BaseInput
+                  {...register("email")}
+                  placeholder={"Email"}
+                  name={"email"}
+                  variant="primary"
+                  fontSize={["xs", "xs", "sm"]}
                 />
-                <MdOutlineAccountCircle 
-                  size={28}
-                  color='#7C7C7C'
+                <MdOutlineEmail size={28} color="#7C7C7C" />
+              </BaseInputWrapper>
+              {errors["email"] && (
+                <BottomText color="white">{errors["email"].message}</BottomText>
+              )}
+
+              {!isLogin && (
+                <BaseInputWrapper>
+                  <BaseInput
+                    placeholder={"What should we call you"}
+                    name={"name"}
+                    variant="primary"
+                    fontSize={["xs", "xs", "sm"]}
+                  />
+                  <MdOutlineAccountCircle size={28} color="#7C7C7C" />
+                </BaseInputWrapper>
+              )}
+
+              <BaseInputWrapper>
+                <BaseInput
+                  {...register("password")}
+                  placeholder={"Password"}
+                  variant="primary"
+                  type={showPassword ? "text" : "password"}
+                  fontSize={["xs", "xs", "sm"]}
                 />
+                {showPassword ? (
+                  <MdVisibility
+                    size={28}
+                    color="#7C7C7C"
+                    onClick={() => setShowPassword(false)}
+                  />
+                ) : (
+                  <MdVisibilityOff
+                    size={28}
+                    color="#7C7C7C"
+                    onClick={() => setShowPassword(true)}
+                  />
+                )}
+              </BaseInputWrapper>
+              {errors["password"] && (
+                <BottomText color="white">
+                  {errors["password"].message}
+                </BottomText>
+              )}
 
-            </BaseInputWrapper>
-            }
-
-
-          <BaseInputWrapper>
-            
-            <BaseInput 
-              ref={passwordRef}
-              placeholder={'Password'}
-              name={'password'}
-              variant='primary'
-              type={showPassword ? 'text' : 'password'}
-              fontSize={['xs', 'xs', 'sm']}
-            />
-            {
-              showPassword ?
-              <MdVisibility 
-              size={28}
-              color='#7C7C7C'
-              onClick={() => setShowPassword(false)}
-            />
-              :
-              <MdVisibilityOff 
-                size={28}
-                color='#7C7C7C'
-                onClick={() => setShowPassword(true)}
-              />
-            }
-
-        </BaseInputWrapper>
-
-          <SubmitButton
-            styles={{
-              marginTop: '1rem'
-            }}
-          >
-            Continue
-          </SubmitButton>
-
-        </Container>
-
-         {
-          isLoading && 
-            <Spinner
-              color='#1ED760'
-            />
-          }
-
-          {
-            !isLoading && isError &&
-              <BottomText
-              color="white"
+              <SubmitButton
+                styles={{
+                  marginTop: "1rem",
+                }}
               >
-                An Error Occured
-              </BottomText> 
-          }
+                Continue
+              </SubmitButton>
+            </Container>
 
-        <Flex
-          alignItems='center'
-          justifyContent='space-between'
-          sx={{
-            width: '100%',
-            gap: '10px'
-          }}
-        >
-          <BottomText
-            bg='inputBg'
-            sx={{
-              height: '1px',
-              width: '100%'
-            }}
-          ></BottomText>
+            {isLoading && <Spinner color="#1ED760" />}
 
-          <Box
-            color='textSecondary'
-            m={4}
-            sx={{
-              color: 'white'
-            }}
-          >
-            OR
-          </Box>
+            {!isLoading && isError && (
+              <BottomText color="white">An Error Occured</BottomText>
+            )}
 
-          <BottomText
-            bg='inputBg'
-            sx={{
-              height: '1px',
-              width: '100%'
-            }}
-          ></BottomText>
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{
+                width: "100%",
+                gap: "10px",
+              }}
+            >
+              <BottomText
+                bg="inputBg"
+                sx={{
+                  height: "1px",
+                  width: "100%",
+                }}
+              ></BottomText>
 
-        </Flex>
+              <Box
+                color="textSecondary"
+                m={4}
+                sx={{
+                  color: "white",
+                }}
+              >
+                OR
+              </Box>
 
-        <Box>
-          <Label
-            color="textPrimary"
-            fontSize={['xs', 'sm']}
-          >
-            <Checkbox
-              onChange={e => console.log(e.target.value)}
-              id='remember'
-              name='remember'
-            />
-            I agree with the terms and Conditions of Use and Privacy Policy.
-          </Label>
-        </Box>
-        
-        {
-          isLogin ?
-          <BottomText
-          color='textPrimary'
-        >
-          Not Joined Us Yet? 
-        <TextButton
-          onClick={() => setIsLogin(false)}
-        >
-            SignUp
-        </TextButton>
-        </BottomText> :
+              <BottomText
+                bg="inputBg"
+                sx={{
+                  height: "1px",
+                  width: "100%",
+                }}
+              ></BottomText>
+            </Flex>
 
-        <BottomText
-          color='textPrimary'
-        >
-          Already on Nikofy? 
-          <TextButton
-          onClick={() => setIsLogin(true)}
-          >
-          LogIn
-        </TextButton>
-        </BottomText>
+            <Box>
+              <Label color="textPrimary" fontSize={["xs", "sm"]}>
+                <Checkbox
+                  onChange={(e) => console.log(e.target.value)}
+                  id="remember"
+                  name="remember"
+                />
+                I agree with the terms and Conditions of Use and Privacy Policy.
+              </Label>
+            </Box>
 
-        }
+            {isLogin ? (
+              <BottomText color="textPrimary">
+                Not Joined Us Yet?
+                <TextButton onClick={() => setIsLogin(false)}>
+                  SignUp
+                </TextButton>
+              </BottomText>
+            ) : (
+              <BottomText color="textPrimary">
+                Already on Nikofy?
+                <TextButton onClick={() => setIsLogin(true)}>LogIn</TextButton>
+              </BottomText>
+            )}
+          </InputContainer>
+        )}
 
+        {!isLogin && (
+          <InputContainer flexDirection="column" alignItems="center">
+            <Container
+              as="form"
+              onSubmit={handleSignUp(onSignUpSubmit)}
+              flexDirection="column"
+              autoComplete="false"
+              autoCorrect="false"
+            >
+              <BaseInputWrapper>
+                <BaseInput
+                  {...registerSignup("email")}
+                  placeholder={"Email"}
+                  variant="primary"
+                  fontSize={["xs", "xs", "sm"]}
+                />
+                <MdOutlineEmail size={28} color="#7C7C7C" />
+              </BaseInputWrapper>
+              {signUpErrors["email"] && (
+                <BottomText color="white">
+                  {signUpErrors["email"].message}
+                </BottomText>
+              )}
 
-    </InputContainer>
+              <BaseInputWrapper>
+                <BaseInput
+                  placeholder={"What should we call you"}
+                  {...registerSignup("name")}
+                  variant="primary"
+                  fontSize={["xs", "xs", "sm"]}
+                />
+                <MdOutlineAccountCircle size={28} color="#7C7C7C" />
+              </BaseInputWrapper>
+              {signUpErrors["name"] && (
+                <BottomText color="white">
+                  {signUpErrors["name"].message}
+                </BottomText>
+              )}
 
-    <TextButton
-      onClick={() => setIsOpen(false)}
-    >Back</TextButton>
-        
-  </Modal>
-    
-  </>
-  )
-}
+              <BaseInputWrapper>
+                <BaseInput
+                  {...registerSignup("password")}
+                  placeholder={"Password"}
+                  variant="primary"
+                  type={showPassword ? "text" : "password"}
+                  fontSize={["xs", "xs", "sm"]}
+                />
+                {showPassword ? (
+                  <MdVisibility
+                    size={28}
+                    color="#7C7C7C"
+                    onClick={() => setShowPassword(false)}
+                  />
+                ) : (
+                  <MdVisibilityOff
+                    size={28}
+                    color="#7C7C7C"
+                    onClick={() => setShowPassword(true)}
+                  />
+                )}
+              </BaseInputWrapper>
+              {signUpErrors["password"] && (
+                <BottomText color="white">
+                  {signUpErrors["password"].message}
+                </BottomText>
+              )}
 
-export default LoginModal
+              <SubmitButton
+                styles={{
+                  marginTop: "1rem",
+                }}
+              >
+                Continue
+              </SubmitButton>
+            </Container>
+
+            {isLoading && <Spinner color="#1ED760" />}
+
+            {!isLoading && isError && (
+              <BottomText color="white">An Error Occured</BottomText>
+            )}
+
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{
+                width: "100%",
+                gap: "10px",
+              }}
+            >
+              <BottomText
+                bg="inputBg"
+                sx={{
+                  height: "1px",
+                  width: "100%",
+                }}
+              ></BottomText>
+
+              <Box
+                color="textSecondary"
+                m={4}
+                sx={{
+                  color: "white",
+                }}
+              >
+                OR
+              </Box>
+
+              <BottomText
+                bg="inputBg"
+                sx={{
+                  height: "1px",
+                  width: "100%",
+                }}
+              ></BottomText>
+            </Flex>
+
+            <Box>
+              <Label color="textPrimary" fontSize={["xs", "sm"]}>
+                <Checkbox
+                  onChange={(e) => console.log(e.target.value)}
+                  id="remember"
+                  name="remember"
+                />
+                I agree with the terms and Conditions of Use and Privacy Policy.
+              </Label>
+            </Box>
+
+            {isLogin ? (
+              <BottomText color="textPrimary">
+                Not Joined Us Yet?
+                <TextButton onClick={() => setIsLogin(false)}>
+                  SignUp
+                </TextButton>
+              </BottomText>
+            ) : (
+              <BottomText color="textPrimary">
+                Already on Nikofy?
+                <TextButton onClick={() => setIsLogin(true)}>LogIn</TextButton>
+              </BottomText>
+            )}
+          </InputContainer>
+        )}
+
+        <TextButton onClick={() => setIsOpen(false)}>Back</TextButton>
+      </Modal>
+    </>
+  );
+};
+
+export default LoginModal;
+

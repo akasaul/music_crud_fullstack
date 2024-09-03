@@ -121,6 +121,18 @@ const songSlice = createSlice({
       state.currentState = "GET_ALL";
     },
 
+    getSongsByGenreReq: (state) => {
+      state.isLoading = true;
+      state.currentState = "GET_BY_GENRE";
+    },
+    getSongsByGenreSuccess: (state, action: PayloadAction<Song[]>) => {
+      state.isLoading = false;
+      state.songs = action.payload;
+    },
+    getSongsByGenreFailure: (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    },
     getAllSuccess: (state, action: PayloadAction<Song[]>) => {
       state.songs = action.payload;
       state.searchResults = action.payload;
@@ -206,6 +218,9 @@ export const {
   deleteSongReq,
   deleteSongSuccess,
   searchSong,
+  getSongsByGenreReq,
+  getSongsByGenreSuccess,
+  getSongsByGenreFailure,
 } = songSlice.actions;
 
 export default songSlice.reducer;

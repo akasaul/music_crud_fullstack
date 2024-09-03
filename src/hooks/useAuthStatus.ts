@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 
 const useAuthStatus = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [isChecking, setIsChecking] = useState<boolean>(true);
+  const [isChecking, setIsChecking] = useState<boolean>(false);
 
   useEffect(() => {
     if (isLoggedIn) {

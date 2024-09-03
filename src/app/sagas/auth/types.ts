@@ -5,8 +5,12 @@ export interface AuthState {
 }
 
 export interface AuthResponse {
+  error: boolean;
+  message: string;
   user: {
-    uid: string;
-    displayName: string;
+    name: string;
+    email: string;
+    role: string;
+    id: string;
   };
 }

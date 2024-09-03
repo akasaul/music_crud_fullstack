@@ -7,7 +7,10 @@ import { useSnapCarousel } from "react-snap-carousel";
 import { Box, Flex, Image, Text } from "rebass";
 import { color, fontSize, fontWeight } from "styled-system";
 import { Spinner } from "theme-ui";
-import { getAllReq } from "../../app/features/song/songSlice";
+import {
+  getAllReq,
+  getSongsByGenreReq,
+} from "../../app/features/song/songSlice";
 import useAuthStatus from "../../hooks/useAuthStatus";
 import BaseCard from "../BaseCard";
 import Slider from "../slider/Slider";
@@ -18,19 +21,19 @@ const HiphopSection = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getAllReq());
+    dispatch(getSongsByGenreReq());
   }, [dispatch]);
 
   const { songs } = useSelector((state) => state.song);
   // const { favs } = useSelector((state) => state.user);
 
-  if (isChecking) {
-    return (
-      <Box>
-        <Spinner color="green" />
-      </Box>
-    );
-  }
+  // if (isChecking) {
+  //   return (
+  //     <Box>
+  //       <Spinner color="green" />
+  //     </Box>
+  //   );
+  // }
 
   const Title = styled(Text)`
     ${fontSize}
@@ -76,11 +79,7 @@ const HiphopSection = () => {
         </More>
       </Header>
 
-      <Slider
-        songs={songs.filter((song) =>
-          song?.genre?.toLowerCase()?.includes("hiphop"),
-        )}
-      />
+      <Slider songs={songs} />
     </Box>
   );
 };
