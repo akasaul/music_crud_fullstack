@@ -9,6 +9,7 @@ interface AuthState {
   isError: boolean;
   isSuccess: boolean;
   errorMsg: string;
+  token: string | null;
 }
 
 interface UserDataPayload {
@@ -30,6 +31,7 @@ const initialState: AuthState = {
   isError: false,
   isSuccess: false,
   errorMsg: "",
+  token: null,
 };
 
 const authSlice = createSlice({

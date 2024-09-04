@@ -4,9 +4,9 @@ import {
   signUpRequest,
   signUpSuccess,
 } from "../../features/auth/authSlice";
-import axios from "axios";
 import { AuthState, AuthResponse } from "./types";
 import { signUpUser } from "../../../services/api/user.service";
+import { setItem } from "../../../lib/localStorage";
 
 function* workAuth() {
   try {
@@ -19,9 +19,12 @@ function* workAuth() {
     const { data } = yield call(() => signUpUser({ name, email, password }));
 
     yield put(signUpSuccess(data.user));
+    setItem("token", data.access_token);
+    setItem("name", data.user.name);
   } catch (err: any) {
     // Dispatch failure action with the error message
-    yield put(signUpFailure(err.message));
+    console.log({ err });
+    yield put(signUpFailure(err.response.data.message));
   }
 }
 

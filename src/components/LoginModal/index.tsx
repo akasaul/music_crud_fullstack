@@ -36,13 +36,21 @@ import {
   signUpSchema,
 } from "../../lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useAuthStatus from "../../hooks/useAuthStatus";
 
-const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }) => {
+interface LoginProps {
+  isOpen: boolean;
+  isLogin: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
   const BaseInput = styled(Input)`
     ${variant}
     ${color}
-  ${fontSize}
-  &:focus {
+    ${fontSize}
+    &:focus {
       outline: none;
       border: none;
     }
@@ -119,13 +127,11 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }) => {
   `;
 
   const {
-    // handleSubmit,
     handleSubmit,
     formState: { errors },
     register,
   } = useForm<LoginBody>({
     resolver: zodResolver(loginSchema),
-    // defaultValues,
   });
 
   const {
@@ -134,43 +140,19 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }) => {
     register: registerSignup,
   } = useForm<SignUpBody>({
     resolver: zodResolver(signUpSchema),
-    // defaultValues,
   });
+
+  const { logIn } = useAuthStatus();
 
   // Show Password
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const dispatch = useDispatch();
 
-  const { isLoading, isError, isSuccess } = useSelector((state) => state.auth);
-
-  // On Form Submission
-  // const handleSubmits = async (e) => {
-  //   e.preventDefault();
-  //
-  //   dispatch(
-  //     setUserData({
-  //       email: emailRef.current.value,
-  //       name: nameRef.current?.value,
-  //       password: passwordRef.current.value,
-  //     }),
-  //   );
-  //
-  //   // Check if req is Sign in or Sign up
-  //   if (isLogin) {
-  //     // Clearing previous state
-  //     dispatch(reset());
-  //
-  //     // TODO: Login request
-  //     dispatch(signInRequest());
-  //   } else {
-  //     // Clearing Prevois State
-  //     dispatch(reset());
-  //
-  //     // Sign up request
-  //     dispatch(signUpRequest());
-  //   }
-  // };
+  const { isLoading, isError, isSuccess, errorMsg } = useSelector(
+    (state) => state.auth,
+  );
 
   if (!isOpen) {
     return;
@@ -189,6 +171,7 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }) => {
       }),
     );
     dispatch(signInRequest());
+    logIn();
   };
 
   const onSignUpSubmit = ({ email, password, name }: SignUpBody) => {
@@ -200,6 +183,7 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }) => {
       }),
     );
     dispatch(signUpRequest());
+    logIn();
   };
 
   return (
@@ -307,7 +291,7 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }) => {
             {isLoading && <Spinner color="#1ED760" />}
 
             {!isLoading && isError && (
-              <BottomText color="white">An Error Occured</BottomText>
+              <BottomText color="white">{errorMsg}</BottomText>
             )}
 
             <Flex
@@ -438,6 +422,33 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }) => {
                   {signUpErrors["password"].message}
                 </BottomText>
               )}
+              <BaseInputWrapper>
+                <BaseInput
+                  {...registerSignup("confirmPassword")}
+                  placeholder={"Confirm Password"}
+                  variant="primary"
+                  type={showConfirmPassword ? "text" : "password"}
+                  fontSize={["xs", "xs", "sm"]}
+                />
+                {showConfirmPassword ? (
+                  <MdVisibility
+                    size={28}
+                    color="#7C7C7C"
+                    onClick={() => setShowConfirmPassword(false)}
+                  />
+                ) : (
+                  <MdVisibilityOff
+                    size={28}
+                    color="#7C7C7C"
+                    onClick={() => setShowConfirmPassword(true)}
+                  />
+                )}
+              </BaseInputWrapper>
+              {signUpErrors["confirmPassword"] && (
+                <BottomText color="white">
+                  {signUpErrors["confirmPassword"].message}
+                </BottomText>
+              )}
 
               <SubmitButton
                 styles={{
@@ -451,7 +462,7 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }) => {
             {isLoading && <Spinner color="#1ED760" />}
 
             {!isLoading && isError && (
-              <BottomText color="white">An Error Occured</BottomText>
+              <BottomText color="white">{errorMsg}</BottomText>
             )}
 
             <Flex
@@ -523,4 +534,3 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }) => {
 };
 
 export default LoginModal;
-

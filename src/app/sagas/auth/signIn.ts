@@ -8,19 +8,22 @@ import {
 import axios from "axios";
 import { AuthResponse, AuthState } from "./types";
 import { signInUser } from "../../../services/api/user.service";
+import { setItem } from "../../../lib/localStorage";
 
 function* workAuth() {
   try {
     const { inputEmail: email, inputPassword: password }: AuthState =
       yield select((state: { auth: AuthState }) => state.auth);
 
-    const response: AuthResponse = yield call(() =>
-      signInUser({ email, password }),
-    );
+    const { data } = yield call(() => signInUser({ email, password }));
 
-    yield put(signInSuccess(response.user));
+    console.log({ data }, "sign in response");
+
+    yield put(signInSuccess(data.user));
+    setItem("token", data.access_token);
+    setItem("name", data.user.name);
   } catch (err: any) {
-    yield put(signInFailure(err.message));
+    yield put(signInFailure(err.response.data.message));
   }
 }
 

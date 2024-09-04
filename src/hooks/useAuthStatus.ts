@@ -1,22 +1,31 @@
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-// import { auth } from '../firebase/firebase';
+import { getItem } from "../lib/localStorage";
 
 const useAuthStatus = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isChecking, setIsChecking] = useState<boolean>(false);
+  const token = getItem("token");
+
+  const logIn = () => {
+    setIsLoggedIn(true);
+  };
+
+  const logOut = () => {
+    setIsLoggedIn(false);
+  };
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (token) {
       setIsChecking(false);
       setIsLoggedIn(true);
     } else {
       setIsChecking(false);
       setIsLoggedIn(false);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, token]);
 
-  return { isLoggedIn, isChecking };
+  return { isLoggedIn, logIn, logOut, isChecking };
 };
 
 export default useAuthStatus;

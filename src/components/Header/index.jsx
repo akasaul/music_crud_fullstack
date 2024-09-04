@@ -22,10 +22,12 @@ import { useDispatch } from "react-redux";
 // import { signOut } from "../../app/features/auth/authSlice";
 // import { auth } from "../../firebase/firebase";
 import { useNavigate, Link } from "react-router-dom";
+import { signOut } from "../../app/features/auth/authSlice";
+import { getItem } from "../../lib/localStorage";
 
 const Header = ({ isHome }) => {
   const HeaderText = styled(Box)``;
-  const { isLoggedIn, isChecking } = useAuthStatus();
+  const { isLoggedIn, isChecking, logOut } = useAuthStatus();
 
   // Modal State
   const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +59,8 @@ const Header = ({ isHome }) => {
   const dispatch = useDispatch();
 
   const Logout = () => {
-    // dispatch(signOut());
+    dispatch(signOut());
+    logOut();
   };
 
   const LogoText = styled(Text)`
@@ -119,7 +122,7 @@ const Header = ({ isHome }) => {
             <MdAdd color="white" size={30} className="header_btn" />
           </Link>
 
-          <ProfileContainer>N</ProfileContainer>
+          <ProfileContainer>{getItem("name")[0]}</ProfileContainer>
 
           <MdLogout
             onClick={Logout}

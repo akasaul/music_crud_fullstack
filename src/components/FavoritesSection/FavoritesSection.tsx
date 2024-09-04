@@ -81,21 +81,21 @@ const FavoritesSection = () => {
         </More>
       </Header>
 
-      {favs.length === 0 && (
-        <Flex alignItems={"center"} sx={{ gap: "20px" }}>
-          <Image
-            src={
-              "https://cdn-icons-png.flaticon.com/512/408/408697.png?w=740&t=st=1683050602~exp=1683051202~hmac=b2742b98226da86801474ffa532a4b203cb68486ee2fb1780eba6c9275272bf9"
-            }
-            height={"80px"}
-          />
-          <Text sx={{ color: "#fff" }}>You have no favorites</Text>
-        </Flex>
-      )}
+      {/* {favs.length === 0 && ( */}
+      {/*   <Flex alignItems={"center"} sx={{ gap: "20px" }}> */}
+      {/*     <Image */}
+      {/*       src={ */}
+      {/*         "https://cdn-icons-png.flaticon.com/512/408/408697.png?w=740&t=st=1683050602~exp=1683051202~hmac=b2742b98226da86801474ffa532a4b203cb68486ee2fb1780eba6c9275272bf9" */}
+      {/*       } */}
+      {/*       height={"80px"} */}
+      {/*     /> */}
+      {/*     <Text sx={{ color: "#fff" }}>You have no favorites</Text> */}
+      {/*   </Flex> */}
+      {/* )} */}
 
-      {isLoggedIn && favs.length !== 0 && (
-        <Slider songs={songs.filter((song) => favs.includes(song.id))} />
-      )}
+      {/* {isLoggedIn && favs.length !== 0 && ( */}
+      {/*   <Slider songs={songs.filter((song) => favs.includes(song.id))} /> */}
+      {/* )} */}
     </Box>
   );
 };

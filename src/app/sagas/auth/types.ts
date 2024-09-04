@@ -7,6 +7,7 @@ export interface AuthState {
 export interface AuthResponse {
   error: boolean;
   message: string;
+  access_token: string;
   user: {
     name: string;
     email: string;
