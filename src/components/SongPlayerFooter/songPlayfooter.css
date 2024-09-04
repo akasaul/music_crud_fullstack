@@ -1,5 +1,5 @@
 .btn {
-  color: #B3B3B3;
+  color: #b3b3b3;
 }
 
 .btn:hover {
@@ -16,7 +16,6 @@
   transform: scale(110%);
 }
 
-
 .play_rotate {
   /* Cross browser styles */
   -webkit-animation: rotate 5s linear infinite;
@@ -25,17 +24,21 @@
 }
 
 /* Cross browser styles */
-@-moz-keyframes rotate { 
-  100% { -moz-transform: rotate(360deg); } 
+@-moz-keyframes rotate {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
 }
 
 /* Cross browser styles */
-@-webkit-keyframes rotate { 
-  100% { -webkit-transform: rotate(360deg); } 
+@-webkit-keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
-@keyframes rotate { 
-  100% { 
-      -webkit-transform: rotate(360deg); 
-      transform:rotate(360deg); 
-  } 
+@keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }

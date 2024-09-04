@@ -20,6 +20,10 @@ export const routes: RouteObject[] = [
     element: <AddSong isEdit={false} />,
   },
   {
+    path: "/edit-song",
+    element: <AddSong isEdit={true} />,
+  },
+  {
     path: "*",
     element: <NotFound />,
   },

@@ -1,8 +1,5 @@
 import {
-  MdAdd,
   MdAlbum,
-  MdCreate,
-  MdFileUpload,
   MdLink,
   MdMic,
   MdMusicNote,
@@ -21,14 +18,18 @@ import {
   setSong,
   addSongRequest,
   editSongReq,
+  setSongForUpdate,
 } from "../../app/features/song/songSlice";
 import SearchResult from "../../components/SearchResult/SearchResult";
 import "../../App.css";
 import Header from "../../components/Header";
 import styled from "@emotion/styled";
-import { color, fontSize, fontWeight } from "styled-system";
+import { color, flex, fontSize, fontWeight } from "styled-system";
 import useAuthStatus from "../../hooks/useAuthStatus";
 import LoginModal from "../../components/LoginModal";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { AddSongBody, addSongSchema } from "../../lib/validation";
 
 interface AddSongProps {
   isEdit: boolean;
@@ -39,27 +40,41 @@ const AddSong = ({ isEdit }: AddSongProps) => {
   // Get Query parameters
   const [params] = useSearchParams();
 
-  // Prefill from query params
-  const [formData, setFormData] = useState({
-    title: !isEdit ? "" : params.get("title"),
-    artist: !isEdit ? "" : params.get("artist"),
-    album: !isEdit ? "" : params.get("album"),
-    genre: "pop",
-    duration: !isEdit ? "" : params.get("duration"),
-    imageUrl: !isEdit ? "" : params.get("imageUrl"),
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+    watch,
+    setValue,
+  } = useForm<AddSongBody>({
+    resolver: zodResolver(addSongSchema),
+    defaultValues: {
+      title: params.get("title") ?? undefined,
+      artist: params.get("artist") ?? undefined,
+      album: params.get("album") ?? undefined,
+      genre: params.get("genre") ?? undefined,
+      duration: params.get("duration") ?? undefined,
+      imageUrl: params.get("imageUrl") ?? undefined,
+    },
   });
 
-  const [query, setQuery] = useState("");
-
-  const onChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const onSetValues = ({
+    title,
+    imageUrl,
+    duration,
+    genre,
+    album,
+    artist,
+  }: AddSongBody) => {
+    setValue("title", title);
+    setValue("imageUrl", imageUrl);
+    setValue("duration", duration);
+    setValue("genre", genre);
+    setValue("album", album);
+    setValue("artist", artist);
   };
 
-  // generic form data
-  const { title, artist, album, genre, duration, imageUrl } = formData;
+  const [query, setQuery] = useState("");
 
   // States from song slice
   const { songs, isLoading, isSuccess, isError, currentState, errorMsg } =
@@ -76,11 +91,10 @@ const AddSong = ({ isEdit }: AddSongProps) => {
   };
 
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuthStatus();
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const { isLoggedIn } = useAuthStatus();
-
+  const onSubmit = (data: AddSongBody) => {
     if (!isLoggedIn) {
       setOpenModal(true);
       return;
@@ -88,30 +102,27 @@ const AddSong = ({ isEdit }: AddSongProps) => {
 
     dispatch(reset());
 
-    dispatch(setSong({ formData, id: params.get("id") }));
-
     if (isEdit) {
+      dispatch(setSongForUpdate({ song: data, id: params.get("id") ?? "" }));
       dispatch(editSongReq());
+      navigate("/");
       return;
     }
 
+    dispatch(setSong(data));
     dispatch(addSongRequest());
+    navigate("/");
+    return;
   };
-
-  const navigate = useNavigate();
-
-  if (isSuccess && currentState === "ADD") {
-    navigate("/");
-  }
-
-  if (isSuccess && currentState === "EDIT") {
-    navigate("/");
-  }
 
   const ErrorMessage = styled(Text)`
     ${color}
     ${fontWeight}
       ${fontSize}
+  `;
+
+  const BottomText = styled(Text)`
+    ${color}
   `;
 
   return (
@@ -185,8 +196,16 @@ const AddSong = ({ isEdit }: AddSongProps) => {
                       artist={song?.artist?.name || song?.artist}
                       duration={song?.duration}
                       album={song?.album?.title || song?.album}
-                      setFormData={setFormData}
-                      formData={formData}
+                      // setFormData={setFormData}
+                      onSetValues={onSetValues}
+                      formData={{
+                        title: watch("title"),
+                        duration: watch("duration"),
+                        artist: watch("artist"),
+                        album: watch("album"),
+                        imageUrl: watch("imageUrl"),
+                        genre: watch("genre"),
+                      }}
                     />
                   ))
                 )}
@@ -198,12 +217,11 @@ const AddSong = ({ isEdit }: AddSongProps) => {
 
       <Container
         as="form"
-        onSubmit={onSubmit}
-        noValidate
-        encType="multipart"
+        onSubmit={handleSubmit(onSubmit)}
         sx={{
           display: "flex",
           gap: "10px",
+          maxWidth: "500px",
           flexDirection: "column",
           marginInline: "auto",
           marginTop: isEdit ? "2rem" : "9rem",
@@ -228,9 +246,7 @@ const AddSong = ({ isEdit }: AddSongProps) => {
           }}
         >
           <Input
-            value={title}
-            onChange={onChange}
-            name="title"
+            {...register("title")}
             type="text"
             placeholder="Title"
             sx={{
@@ -241,6 +257,9 @@ const AddSong = ({ isEdit }: AddSongProps) => {
           />
           <MdMusicNote color="white" size={24} />
         </Container>
+        {errors["title"] && (
+          <BottomText color="white">{errors["title"].message}</BottomText>
+        )}
 
         <Container
           bg="inputBg"
@@ -251,9 +270,7 @@ const AddSong = ({ isEdit }: AddSongProps) => {
           }}
         >
           <Input
-            value={artist}
-            onChange={onChange}
-            name="artist"
+            {...register("artist")}
             type="text"
             placeholder="Artist"
             sx={{
@@ -264,6 +281,9 @@ const AddSong = ({ isEdit }: AddSongProps) => {
           />
           <MdMic color="white" size={24} />
         </Container>
+        {errors["artist"] && (
+          <BottomText color="white">{errors["artist"].message}</BottomText>
+        )}
 
         <Container
           bg="inputBg"
@@ -274,9 +294,7 @@ const AddSong = ({ isEdit }: AddSongProps) => {
           }}
         >
           <Input
-            value={album}
-            onChange={onChange}
-            name="album"
+            {...register("album")}
             type="text"
             placeholder="Album"
             sx={{
@@ -287,6 +305,9 @@ const AddSong = ({ isEdit }: AddSongProps) => {
           />
           <MdAlbum color="white" size={24} />
         </Container>
+        {errors["album"] && (
+          <BottomText color="white">{errors["album"].message}</BottomText>
+        )}
 
         <Container
           bg="inputBg"
@@ -297,10 +318,9 @@ const AddSong = ({ isEdit }: AddSongProps) => {
           }}
         >
           <select
-            name="genre"
+            {...register("genre")}
             className="input focus:border focus:border-primary"
-            onChange={onChange}
-            value={genre}
+            // value={genre}
             style={{
               width: "100%",
               height: "30px",
@@ -320,6 +340,9 @@ const AddSong = ({ isEdit }: AddSongProps) => {
             <option value="Other">Other</option>
           </select>
         </Container>
+        {errors["genre"] && (
+          <BottomText color="white">{errors["genre"].message}</BottomText>
+        )}
 
         <Container
           bg="inputBg"
@@ -330,9 +353,7 @@ const AddSong = ({ isEdit }: AddSongProps) => {
           }}
         >
           <Input
-            value={duration}
-            onChange={onChange}
-            name="duration"
+            {...register("duration")}
             type="text"
             placeholder="Duration"
             sx={{
@@ -343,6 +364,9 @@ const AddSong = ({ isEdit }: AddSongProps) => {
           />
           <MdTimer color="white" size={24} />
         </Container>
+        {errors["duration"] && (
+          <BottomText color="white">{errors["duration"].message}</BottomText>
+        )}
 
         <Container
           bg="inputBg"
@@ -359,9 +383,7 @@ const AddSong = ({ isEdit }: AddSongProps) => {
             }}
           >
             <Input
-              value={imageUrl}
-              onChange={onChange}
-              name="imageUrl"
+              {...register("imageUrl")}
               type="url"
               placeholder="ImageUrl"
               sx={{
@@ -372,18 +394,21 @@ const AddSong = ({ isEdit }: AddSongProps) => {
             />
             <MdLink color="white" size={24} />
           </Flex>
+          {errors["imageUrl"] && (
+            <BottomText color="white">{errors["imageUrl"].message}</BottomText>
+          )}
 
-          <Box>
-            {imageUrl?.length > 0 ? (
+          {watch("imageUrl") && (
+            <Box>
               <Image
-                src={imageUrl}
+                src={watch("imageUrl")}
                 width="100%"
                 sx={{
                   borderRadius: "5px",
                 }}
               ></Image>
-            ) : null}
-          </Box>
+            </Box>
+          )}
         </Container>
 
         <Box

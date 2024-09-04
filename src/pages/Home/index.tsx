@@ -26,7 +26,7 @@ const Home = () => {
     >
       <Navbar />
       <RecentSongs />
-      <FavoritesSection />
+      {/* <FavoritesSection /> */}
       <HiphopSection />
     </Home>
   );

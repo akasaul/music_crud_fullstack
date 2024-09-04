@@ -28,6 +28,7 @@ import useAuthStatus from "../../hooks/useAuthStatus";
 import { formatTime } from "../../utils/formatTime";
 // import LoginModal from "../LoginModal";
 import "./songPlayfooter.css";
+import LoginModal from "../LoginModal";
 
 const SongPlayerFooter = () => {
   const SongPlayer = styled(Box)`
@@ -78,7 +79,7 @@ const SongPlayerFooter = () => {
 
   const [play, setPlay] = useState(true);
 
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
@@ -115,11 +116,11 @@ const SongPlayerFooter = () => {
 
   const handleEditSong = () => {
     navigate(
-      `/edit-song?id=${song.id}&&imageUrl=${song.imageUrl}&&title=${song.title}&&artist=${song.artist}&&album=${song.album}&&duration=${song.duration}`,
+      `/edit-song?id=${song._id}&&imageUrl=${song.coverImg}&&title=${song.title}&&artist=${song.artist}&&album=${song.album}&&duration=${song.duration}`,
     );
   };
 
-  const togglePlay = (playing) => {
+  const togglePlay = (playing: boolean) => {
     setPlay(playing);
   };
 
@@ -153,11 +154,11 @@ const SongPlayerFooter = () => {
             gap: "10px",
           }}
         >
-          {favs.includes(song.id) ? (
-            <MdFavorite onClick={toggleFav} size={24} />
-          ) : (
-            <MdFavoriteBorder onClick={toggleFav} size={24} />
-          )}
+          {/* {favs.includes(song.id) ? ( */}
+          {/*   <MdFavorite onClick={toggleFav} size={24} /> */}
+          {/* ) : ( */}
+          {/*   <MdFavoriteBorder onClick={toggleFav} size={24} /> */}
+          {/* )} */}
           {play ? (
             <MdPause
               size={26}
@@ -195,10 +196,10 @@ const SongPlayerFooter = () => {
           }}
         >
           <Image
-            src={song.imageUrl}
+            src={song.coverImg}
             height={"100%"}
-            width={["60px"]}
-            className={play && "play_rotate"}
+            width={"60px"}
+            className={play ? "play_rotate" : ""}
             sx={{
               borderRadius: play ? "50%" : "10px",
             }}
@@ -216,11 +217,11 @@ const SongPlayerFooter = () => {
               <Title>{song.artist}</Title>
             </Flex>
 
-            {favs.includes(song.id) ? (
-              <MdFavorite onClick={toggleFav} size={24} />
-            ) : (
-              <MdFavoriteBorder onClick={toggleFav} size={24} />
-            )}
+            {/* {favs.includes(song.id) ? ( */}
+            {/*   <MdFavorite onClick={toggleFav} size={24} /> */}
+            {/* ) : ( */}
+            {/*   <MdFavoriteBorder onClick={toggleFav} size={24} /> */}
+            {/* )} */}
           </Flex>
         </Flex>
 
@@ -318,7 +319,7 @@ const SongPlayerFooter = () => {
                 }}
               >
                 Album:{" "}
-                {song.album.length > 15
+                {song.album?.length > 15
                   ? `${song.album.slice(0, 15)}...`
                   : song.album}
               </Text>
@@ -346,10 +347,9 @@ const SongPlayerFooter = () => {
           </SongInfo>
         )}
       </SongPlayerDesktop>
-      {/* <LoginModal isOpen={openModal} setIsOpen={setOpenModal} /> */}
+      <LoginModal isOpen={openModal} setIsOpen={setOpenModal} />
     </>
   );
 };
 
 export default SongPlayerFooter;
-

@@ -5,7 +5,7 @@ export interface Song {
   genre: string;
   coverImg: string;
   duration: number;
-  id: string;
+  _id: string;
   createdAt: string;
   updatedAt: string;
 }

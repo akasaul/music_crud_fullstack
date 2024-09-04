@@ -1,49 +1,17 @@
 import { call, put, select, takeEvery } from "redux-saga/effects";
-import { addSongFailure, addSongSuccess } from "../../features/song/songSlice";
-// import { auth, db } from "../../../firebase/firebase";
-// import { addDoc, collection, doc } from "firebase/firestore";
-// import { serverTimestamp } from "firebase/firestore";
-
-interface FormData {
-  title: string;
-  album: string;
-  artist: string;
-  duration: string;
-  imageUrl: string;
-}
-
-interface SongState {
-  formData: FormData;
-}
-
-interface RootState {
-  song: {
-    song: SongState;
-  };
-}
+import {
+  addSongFailure,
+  addSongRequest,
+  addSongSuccess,
+} from "../../features/song/songSlice";
+import { addSongService } from "../../../services/api/song.service";
 
 // Worker function
 function* workAddSong() {
   try {
-    const { song }: { song: SongState } = yield select(
-      (state: RootState) => state.song,
-    );
+    const { addSongData } = yield select((state) => state.song);
 
-    const { title, album, artist, duration, imageUrl } = song.formData;
-
-    if (!title || !album || !duration || !artist || !imageUrl) {
-      throw new Error("Please include all required fields");
-    }
-
-    const res = yield call(
-      () => {},
-      // addDoc(collection(db, "songs"), {
-      //   ...song.formData,
-      //   playlists: [],
-      //   timeStamp: serverTimestamp(),
-      //   postedBy: doc(db, `/users/${auth.currentUser.uid}`),
-      // }),
-    );
+    yield call(() => addSongService(addSongData));
 
     yield put(addSongSuccess());
   } catch (err: any) {
@@ -53,7 +21,7 @@ function* workAddSong() {
 
 // Add Song saga
 function* addSong() {
-  yield takeEvery("song/addSongRequest", workAddSong);
+  yield takeEvery(addSongRequest.type, workAddSong);
 }
 
 export default addSong;

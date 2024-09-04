@@ -40,18 +40,9 @@ const Slider = ({ songs }: SliderProps) => {
                   alignItems: "center",
                   marginInline: "30px",
                 }}
-                key={songs[i]?.id}
+                key={songs[i]?._id}
               >
-                <BaseCard
-                  imageUrl={songs[i]?.coverImg}
-                  album={songs[i]?.album}
-                  artist={songs[i]?.artist}
-                  duration={songs[i]?.duration}
-                  genre={songs[i]?.genre}
-                  id={songs[i]?.id}
-                  title={songs[i]?.title}
-                  key={songs[i]?.id}
-                />
+                <BaseCard song={songs[i]} key={songs[i]?._id} />
               </li>
             ),
         )}

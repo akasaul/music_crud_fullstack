@@ -79,7 +79,7 @@ const HiphopSection = () => {
         </More>
       </Header>
 
-      <Slider songs={songs} />
+      {/* <Slider songs={songs} /> */}
     </Box>
   );
 };

@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import { auth, User } from "../../../firebase/firebase";
 
-// Define the initial state type
 interface UserState {
   user: object | null;
   favs: string[];

@@ -1,6 +1,18 @@
 import styled from "@emotion/styled";
 import { Box, Flex, Image, Text } from "theme-ui";
 import { formatTime } from "../../utils/formatTime";
+import { AddSongBody } from "../../lib/validation";
+
+interface SearchResultProps {
+  title: string;
+  imageUrl: string;
+  duration: number;
+  artist: string;
+  album: string;
+  genre: string;
+  onSetValues: (data: AddSongBody) => void;
+  formData: AddSongBody;
+}
 
 const SearchResult = ({
   title,
@@ -8,9 +20,10 @@ const SearchResult = ({
   duration,
   artist,
   album,
+  genre,
   onSetValues,
   formData,
-}) => {
+}: SearchResultProps) => {
   const Container = styled(Box)`
     background: #323232;
     &:hover {
@@ -57,13 +70,13 @@ const SearchResult = ({
   }
 
   const handleClick = (e) => {
-    setFormData({
-      ...formData,
+    onSetValues({
       title,
-      duration,
+      duration: duration.toString(),
       artist,
       album,
       imageUrl,
+      genre,
     });
   };
 

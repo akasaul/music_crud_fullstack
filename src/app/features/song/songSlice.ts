@@ -1,10 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Song } from "../../types/song";
+import { AddSongBody } from "../../../lib/validation";
 
 interface SongState {
   songs: Song[];
   recents: Song[];
   song: Song | null;
+  addSongData: AddSongBody | null;
+  updateSongData: { song: AddSongBody; id: string } | null;
   query: string;
   isLoading: boolean;
   isError: boolean;
@@ -21,6 +24,8 @@ const initialState: SongState = {
   songs: [],
   recents: [],
   song: null,
+  addSongData: null,
+  updateSongData: null,
   query: "",
   isLoading: false,
   isError: false,
@@ -61,8 +66,15 @@ const songSlice = createSlice({
       state.query = action.payload;
     },
 
-    setSong: (state, action: PayloadAction<Song>) => {
-      state.song = action.payload;
+    setSong: (state, action: PayloadAction<AddSongBody>) => {
+      state.addSongData = action.payload;
+    },
+
+    setSongForUpdate: (
+      state,
+      action: PayloadAction<{ song: AddSongBody; id: string }>,
+    ) => {
+      state.updateSongData = action.payload;
     },
 
     addSongRequest: (state) => {
@@ -221,6 +233,7 @@ export const {
   getSongsByGenreReq,
   getSongsByGenreSuccess,
   getSongsByGenreFailure,
+  setSongForUpdate,
 } = songSlice.actions;
 
 export default songSlice.reducer;

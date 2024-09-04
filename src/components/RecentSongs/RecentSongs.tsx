@@ -63,16 +63,7 @@ const RecentSongs = () => {
           isSuccess &&
           fetchRecentState === "FETCH_RECENT" &&
           recents?.map((recent: Song) => (
-            <SongCard
-              key={recent.id}
-              id={recent.id}
-              artist={recent.artist}
-              imageUrl={recent.coverImg}
-              title={recent.title}
-              album={recent.album}
-              duration={recent.duration}
-              genre={recent.genre}
-            />
+            <SongCard song={recent} key={recent._id} />
           ))
         )}
       </RecentGrid>
@@ -81,4 +72,3 @@ const RecentSongs = () => {
 };
 
 export default RecentSongs;
-

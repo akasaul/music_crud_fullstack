@@ -1,16 +1,18 @@
 import styled from "@emotion/styled";
 import { useDispatch } from "react-redux";
 import { playSong } from "../../app/features/song/songSlice";
-import { AppDispatch } from "../../app/store"; // Adjust path as needed
+// import { AppDispatch } from "../../app/store"; // Adjust path as needed
+import { Song } from "../../app/types/song";
 
 interface BaseCardProps {
-  title: string;
-  imageUrl: string;
-  artist: string;
-  id: string;
-  album: string;
-  duration: number;
-  genre: string;
+  // title: string;
+  // imageUrl: string;
+  // artist: string;
+  // id: string;
+  // album: string;
+  // duration: number;
+  // genre: string;
+  song: Song;
 }
 
 const BasicCard = styled.div`
@@ -56,31 +58,22 @@ const CardBody = styled.p`
   font-size: 0.875rem; /* Equivalent to fontSize='xs' */
 `;
 
-const BaseCard: React.FC<BaseCardProps> = ({
-  title,
-  imageUrl,
-  artist,
-  id,
-  album,
-  duration,
-  genre,
-}) => {
-  const dispatch = useDispatch<AppDispatch>();
+const BaseCard: React.FC<BaseCardProps> = ({ song }) => {
+  const dispatch = useDispatch();
 
   const startPlay = () => {
-    dispatch(playSong({ title, artist, imageUrl, album, duration, genre, id }));
+    dispatch(playSong(song));
   };
 
   return (
     <BasicCard onClick={startPlay}>
-      <ImageStyled src={imageUrl} alt={title} />
+      <ImageStyled src={song.coverImg} alt={song.title} />
       <div>
-        <CardHeading>{title}</CardHeading>
-        <CardBody>{artist}</CardBody>
+        <CardHeading>{song.title}</CardHeading>
+        <CardBody>{song.artist}</CardBody>
       </div>
     </BasicCard>
   );
 };
 
 export default BaseCard;
-

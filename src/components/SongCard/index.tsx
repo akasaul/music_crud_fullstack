@@ -2,11 +2,15 @@ import styled from "@emotion/styled";
 import { MdPlayArrow, MdPlayCircle } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { Box, Button, Flex, Image, Text } from "rebass";
-import { color, fontSize, fontWeight, grid } from "styled-system";
-// import { playSong } from "../../app/features/song/songSlice";
+import { color, fontSize, fontWeight } from "styled-system";
+import { playSong } from "../../app/features/song/songSlice";
 import "./songCard.css";
+import { Song } from "../../app/types/song";
 
-const SongCard = ({ artist, id, imageUrl, title, album, duration, genre }) => {
+interface SongCardProps {
+  song: Song;
+}
+const SongCard = ({ song }: SongCardProps) => {
   const CardText = styled(Text)`
     ${color}
     ${fontSize}
@@ -37,7 +41,7 @@ const SongCard = ({ artist, id, imageUrl, title, album, duration, genre }) => {
   const disptch = useDispatch();
 
   const startPlay = () => {
-    // disptch(playSong({ title, artist, imageUrl, album, duration, genre, id }));
+    disptch(playSong(song));
   };
 
   return (
@@ -52,7 +56,7 @@ const SongCard = ({ artist, id, imageUrl, title, album, duration, genre }) => {
     >
       <Image
         mr={[2, 1, 1, 3]}
-        src={imageUrl}
+        src={song.coverImg}
         height={["55px", "55px", "80px"]}
         width={["55px", "55px", "80px"]}
         sx={{
@@ -65,7 +69,7 @@ const SongCard = ({ artist, id, imageUrl, title, album, duration, genre }) => {
           fontSize={["xs", "xs", "xs", "sm"]}
           fontWeight="semiBold"
         >
-          {artist}
+          {song.artist}
         </CardText>
 
         <CardSubtitle
@@ -73,7 +77,7 @@ const SongCard = ({ artist, id, imageUrl, title, album, duration, genre }) => {
           fontSize={["xs", "xs", "xs"]}
           display={["none", "none", "block"]}
         >
-          {title}
+          {song.title}
         </CardSubtitle>
       </Flex>
 
@@ -97,4 +101,3 @@ const SongCard = ({ artist, id, imageUrl, title, album, duration, genre }) => {
 };
 
 export default SongCard;
-
