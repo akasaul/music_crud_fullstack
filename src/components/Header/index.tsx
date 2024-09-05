@@ -1,31 +1,23 @@
 import "./header.css";
-import { Box, Button, Flex, Heading, Image, Text } from "rebass";
-import {
-  MdOutlineNotifications,
-  MdOutlineAlarm,
-  MdOutlineSettings,
-  MdOutlineLogin,
-  MdLogout,
-  MdOutlineHdrPlus,
-  MdAdd,
-} from "react-icons/md";
+import { Box, Flex, Image } from "rebass";
+import { MdLogout, MdAdd } from "react-icons/md";
 import styled from "@emotion/styled";
-import { fontSize, fontWeight, variant } from "styled-system";
 import PrimaryButton from "../Buttons/PrimaryButton";
-import SecondaryButton from "../Buttons/SecondaryButton";
 import TextButton from "../Buttons/TextButton";
 import { useState } from "react";
 import LoginModal from "../LoginModal";
 import useAuthStatus from "../../hooks/useAuthStatus";
 import { Spinner } from "theme-ui";
 import { useDispatch } from "react-redux";
-// import { signOut } from "../../app/features/auth/authSlice";
-// import { auth } from "../../firebase/firebase";
 import { useNavigate, Link } from "react-router-dom";
 import { signOut } from "../../app/features/auth/authSlice";
 import { getItem } from "../../lib/localStorage";
 
-const Header = ({ isHome }) => {
+interface HeaderProps {
+  isHome: boolean;
+}
+
+const Header = ({ isHome }: HeaderProps) => {
   const HeaderText = styled(Box)``;
   const { isLoggedIn, isChecking, logOut } = useAuthStatus();
 
@@ -62,12 +54,6 @@ const Header = ({ isHome }) => {
     dispatch(signOut());
     logOut();
   };
-
-  const LogoText = styled(Text)`
-    ${fontWeight}
-    ${fontSize}
-    color: #fff;
-  `;
 
   const Logo = styled(Flex)`
     align-items: center;
@@ -122,7 +108,7 @@ const Header = ({ isHome }) => {
             <MdAdd color="white" size={30} className="header_btn" />
           </Link>
 
-          <ProfileContainer>{getItem("name")[0]}</ProfileContainer>
+          <ProfileContainer>{(getItem("name") as string)[0]}</ProfileContainer>
 
           <MdLogout
             onClick={Logout}

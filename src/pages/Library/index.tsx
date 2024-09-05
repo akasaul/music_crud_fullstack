@@ -46,7 +46,7 @@ const Library = () => {
     color: #fff;
   `;
 
-  const genres = ["HipHop", "R&B", "Pop", "Country", "Ethiopian", "Other"];
+  // const genres = ["HipHop", "R&B", "Pop", "Country", "Ethiopian", "Other"];
 
   const { isAuth: isLoggedIn } = useSelector((state) => state.auth);
 
@@ -115,13 +115,13 @@ const Library = () => {
 
       <LibraryHeader as="h3">All Songs</LibraryHeader>
 
-      <FilterContainer sx={{ gap: "10px" }}>
-        {genres.map((genre) => (
-          <FilterButton key={genre} color="textSecondary">
-            {genre}
-          </FilterButton>
-        ))}
-      </FilterContainer>
+      {/* <FilterContainer sx={{ gap: "10px" }}> */}
+      {/*   {genres.map((genre) => ( */}
+      {/*     <FilterButton key={genre} color="textSecondary"> */}
+      {/*       {genre} */}
+      {/*     </FilterButton> */}
+      {/*   ))} */}
+      {/* </FilterContainer> */}
 
       <SongsContainer>
         {isLoading && currentState === "GET_ALL" ? (

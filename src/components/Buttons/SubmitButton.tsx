@@ -2,7 +2,11 @@ import { Button } from "rebass";
 import styled from "@emotion/styled";
 import { buttonStyle, color, fontFamily, variant } from "styled-system";
 
-const PrimaryButton = ({ btnText, onClick }) => {
+interface SubmitButtonProps {
+  children: React.ReactNode;
+}
+
+const SubmitButton = ({ children }: SubmitButtonProps) => {
   const MyButton = styled(Button)`
     ${color}
     ${variant}
@@ -11,15 +15,16 @@ const PrimaryButton = ({ btnText, onClick }) => {
   `;
   return (
     <MyButton
-      variant="primary"
+      variant="submit"
       fontFamily="dmSans"
-      onClick={onClick}
+      type="submit"
+      py="10px"
       // color='black'
     >
-      {btnText}
+      {children}
     </MyButton>
   );
 };
 
-export default PrimaryButton;
+export default SubmitButton;
 

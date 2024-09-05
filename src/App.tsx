@@ -24,6 +24,7 @@ import Sidebar from "./components/Sidebar";
 import SongPlayerFooter from "./components/SongPlayerFooter/SongPlayerFooter";
 import { getItem } from "./lib/localStorage";
 import { setIsAuth } from "./app/features/auth/authSlice";
+import { Spinner } from "theme-ui";
 
 const App: React.FC = () => {
   const { isAuth } = useSelector((state) => state.auth);
@@ -53,7 +54,13 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+          fallback={
+            <Container height={"100vh"} background={"#000"}>
+              <Spinner />
+            </Container>
+          }
+        >
           <Container
             display="flex"
             bg="primary"

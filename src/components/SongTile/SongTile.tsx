@@ -199,18 +199,22 @@ const SongTile = ({
           </Time>
         )}
 
-        {isFav ? (
-          <MdFavorite
-            onClick={() => toggleFav(_id)}
-            color="#1ED760"
-            size={20}
-          />
+        {!isSearch ? (
+          isFav ? (
+            <MdFavorite
+              onClick={() => toggleFav(_id)}
+              color="#1ED760"
+              size={20}
+            />
+          ) : (
+            <MdFavoriteBorder
+              onClick={() => toggleFav(_id)}
+              color="#1ED760"
+              size={20}
+            />
+          )
         ) : (
-          <MdFavoriteBorder
-            onClick={() => toggleFav(_id)}
-            color="#1ED760"
-            size={20}
-          />
+          <></>
         )}
 
         <Time color="textSecondary" fontWeight="500">

@@ -1,13 +1,13 @@
 import { FC, lazy } from "react";
 import { RouteObject } from "react-router-dom";
-import AddSong from "./pages/AddSongs";
-import Library from "./pages/Library";
-import FavoriteSongs from "./pages/Favorites";
-import Search from "./pages/Search";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const AddSong = lazy(() => import("./pages/AddSongs"));
+const Search = lazy(() => import("./pages/Search"));
+const FavoriteSongs = lazy(() => import("./pages/Favorites"));
+const Library = lazy(() => import("./pages/Library"));
 
 export const routes: RouteObject[] = [
   {
@@ -28,6 +28,10 @@ export const routes: RouteObject[] = [
   },
   {
     path: "/library",
+    element: <Library />,
+  },
+  {
+    path: "/analytics",
     element: <Library />,
   },
   {

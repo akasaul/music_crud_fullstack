@@ -1,8 +1,15 @@
-import styled from "@emotion/styled"
-import { MdAdd, MdOutlineFavoriteBorder, MdOutlineHome, MdOutlineLibraryMusic, MdSearch } from "react-icons/md";
-import { Box , Flex} from "rebass"
-import { color } from "styled-system"
-import ListTile from '../ListTile';
+import styled from "@emotion/styled";
+import {
+  MdAdd,
+  MdAnalytics,
+  MdOutlineFavoriteBorder,
+  MdOutlineHome,
+  MdOutlineLibraryMusic,
+  MdSearch,
+} from "react-icons/md";
+import { Box, Flex } from "rebass";
+import { color } from "styled-system";
+import ListTile from "../ListTile";
 
 const index = () => {
   const Container = styled(Box)`
@@ -16,164 +23,113 @@ const index = () => {
 
   return (
     <Container
-      display={['none', 'flex']}
-      width={['auto', '80px', 'max(25%, 120px)']}
-      flexDirection='column'
-      alignItems='center'
+      display={["none", "flex"]}
+      width={["auto", "80px", "max(25%, 120px)"]}
+      flexDirection="column"
+      alignItems="center"
     >
-
-    {/* Home and search container */}
-    <TopContainer
-      flexDirection='column'
-      py={'20px'}
-      bg='sideBarBg'
-      px={'20px'}
-      my={'5px'}
-      alignItems={['', 'center', 'start']}
-      sx={{
-        gap: '10px'
-      }}
-    >
-      <ListTile text={'Home'} link={'/'}>
-        {/* display d/t Icon sizes at view ports */}
-        <Box
-          display={['none', 'block', 'none']}
-        >
-          <MdOutlineHome
-              className='btn'
-              size={36}
-              color='#B3B3B3'
-            />
-        </Box>
-
-        <Box
-          display={['none', 'none', 'block']}
-        >
-          <MdOutlineHome
-              className='btn'
-              size={30}
-              color='#B3B3B3'
-            />
-        </Box>
-
-      </ListTile>
-
-      <ListTile text={'Search'} link={'/search'}>
-        {/* display d/t Icon sizes at view ports */}
-        <Box
-            display={['none', 'block', 'none']}
-          >
-            <MdSearch
-                className='btn'
-                size={36}
-                color='#B3B3B3'
-              />
+      {/* Home and search container */}
+      <TopContainer
+        flexDirection="column"
+        py={"20px"}
+        bg="sideBarBg"
+        px={"20px"}
+        my={"5px"}
+        alignItems={["", "center", "start"]}
+        sx={{
+          gap: "10px",
+        }}
+      >
+        <ListTile text={"Home"} link={"/"}>
+          {/* display d/t Icon sizes at view ports */}
+          <Box display={["none", "block", "none"]}>
+            <MdOutlineHome className="btn" size={36} color="#B3B3B3" />
           </Box>
 
-          <Box
-            display={['none', 'none', 'block']}
-          >
-            <MdSearch
-                className='btn'
-                size={30}
-                color='#B3B3B3'
-              />
+          <Box display={["none", "none", "block"]}>
+            <MdOutlineHome className="btn" size={30} color="#B3B3B3" />
           </Box>
-      </ListTile>
-    </TopContainer>
+        </ListTile>
+
+        <ListTile text={"Search"} link={"/search"}>
+          {/* display d/t Icon sizes at view ports */}
+          <Box display={["none", "block", "none"]}>
+            <MdSearch className="btn" size={36} color="#B3B3B3" />
+          </Box>
+
+          <Box display={["none", "none", "block"]}>
+            <MdSearch className="btn" size={30} color="#B3B3B3" />
+          </Box>
+        </ListTile>
+      </TopContainer>
 
       {/* Library and Favorites */}
-    <TopContainer
-      flexDirection='column'
-      py={'20px'}
-      bg='sideBarBg'
-      px={'20px'}
-      my={'5px'}
-      height={'100%'}
-      alignItems={['', 'center', 'start']}
-      sx={{
-        gap: '10px'
-      }}
-    >
-      <ListTile text={'Favorites'} link={'/favorites'}>
-        {/* display d/t Icon sizes at view ports */}
-        <Box
-          display={['none', 'block', 'none']}
-        >
-          <MdOutlineFavoriteBorder
-              className='btn'
+      <TopContainer
+        flexDirection="column"
+        py={"20px"}
+        bg="sideBarBg"
+        px={"20px"}
+        my={"5px"}
+        height={"100%"}
+        alignItems={["", "center", "start"]}
+        sx={{
+          gap: "10px",
+        }}
+      >
+        <ListTile text={"Favorites"} link={"/favorites"}>
+          {/* display d/t Icon sizes at view ports */}
+          <Box display={["none", "block", "none"]}>
+            <MdOutlineFavoriteBorder
+              className="btn"
               size={36}
-              color='#B3B3B3'
+              color="#B3B3B3"
             />
-        </Box>
+          </Box>
 
-        <Box
-          display={['none', 'none', 'block']}
-        >
-          <MdOutlineFavoriteBorder
-              className='btn'
+          <Box display={["none", "none", "block"]}>
+            <MdOutlineFavoriteBorder
+              className="btn"
               size={30}
-              color='#B3B3B3'
+              color="#B3B3B3"
             />
-        </Box>
+          </Box>
+        </ListTile>
 
-      </ListTile>
-
-      <ListTile text={'Library'} link={'/library'} askLogin={true}>
-        {/* display d/t Icon sizes at view ports */}
-        <Box
-            display={['none', 'block', 'none']}
-          >
-            <MdOutlineLibraryMusic
-                className='btn'
-                size={36}
-                color='#B3B3B3'
-              />
+        <ListTile text={"Library"} link={"/library"} askLogin={true}>
+          {/* display d/t Icon sizes at view ports */}
+          <Box display={["none", "block", "none"]}>
+            <MdOutlineLibraryMusic className="btn" size={36} color="#B3B3B3" />
           </Box>
 
-          <Box
-            display={['none', 'none', 'block']}
-          >
-            <MdOutlineLibraryMusic
-                className='btn'
-                size={30}
-                color='#B3B3B3'
-              />
+          <Box display={["none", "none", "block"]}>
+            <MdOutlineLibraryMusic className="btn" size={30} color="#B3B3B3" />
+          </Box>
+        </ListTile>
+
+        <ListTile text={"Add Song"} link={"/add-song"}>
+          {/* display d/t Icon sizes at view ports */}
+          <Box display={["none", "block", "none"]}>
+            <MdAdd className="btn" size={36} color="#B3B3B3" />
           </Box>
 
-      </ListTile>
-
-      <ListTile text={'Add Song'} link={'/add-song'}>
-        {/* display d/t Icon sizes at view ports */}
-        <Box
-            display={['none', 'block', 'none']}
-          >
-            <MdAdd
-                className='btn'
-                size={36}
-                color='#B3B3B3'
-              />
+          <Box display={["none", "none", "block"]}>
+            <MdAdd className="btn" size={30} color="#B3B3B3" />
+          </Box>
+        </ListTile>
+        <ListTile text={"Analytics"} link={"/analytics"}>
+          {/* display d/t Icon sizes at view ports */}
+          <Box display={["none", "block", "none"]}>
+            <MdAnalytics className="btn" size={36} color="#B3B3B3" />
           </Box>
 
-          <Box
-            display={['none', 'none', 'block']}
-          >
-            <MdAdd
-                className='btn'
-                size={30}
-                color='#B3B3B3'
-              />
+          <Box display={["none", "none", "block"]}>
+            <MdAnalytics className="btn" size={30} color="#B3B3B3" />
           </Box>
-          
-      </ListTile>
-      
-    </TopContainer>
-
-
-
-
+        </ListTile>
+      </TopContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default index
+export default index;
+
