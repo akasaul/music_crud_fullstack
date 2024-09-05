@@ -8,8 +8,8 @@ import "../../App.css";
 import { MdAccountCircle } from "react-icons/md";
 import { Spinner } from "theme-ui";
 import {
-  fetchRecentRequest,
   getFavsRequest,
+  getLibReq,
   reset,
 } from "../../app/features/song/songSlice";
 import SongTile from "../../components/SongTile/SongTile";
@@ -18,15 +18,18 @@ import { LibSong } from "../../app/types/song";
 const FavoriteSongs = () => {
   const dispatch = useDispatch();
 
+  const {
+    favSongs,
+    libSongs: recents,
+    isLoading,
+    currentState,
+  } = useSelector((state) => state.song);
+
   useEffect(() => {
     dispatch(reset());
     dispatch(getFavsRequest());
-    dispatch(fetchRecentRequest());
+    dispatch(getLibReq());
   }, [dispatch]);
-
-  const { favSongs, recents, isLoading, currentState } = useSelector(
-    (state) => state.song,
-  );
 
   const { isAuth: isLoggedIn } = useSelector((state) => state.auth);
 

@@ -1,5 +1,6 @@
 import { all, call, put, select, takeEvery } from "redux-saga/effects";
 import {
+  getFavsRequest,
   getLibReq,
   getMySongsReq,
   removeFavRequest,
@@ -7,17 +8,17 @@ import {
 import { removeSongFromFav } from "../../../services/api/song.service";
 
 // Worker function
-function* workAddToFav() {
+function* workRemoveFromFav() {
   try {
     const { favId } = yield select((state) => state.song);
     yield call(() => removeSongFromFav(favId));
 
-    yield all([put(getLibReq()), put(getMySongsReq())]);
+    yield all([put(getLibReq()), put(getFavsRequest()), put(getMySongsReq())]);
   } catch (err: any) {}
 }
 
 function* removeFromFavRequestSaga() {
-  yield takeEvery(removeFavRequest.type, workAddToFav);
+  yield takeEvery(removeFavRequest.type, workRemoveFromFav);
 }
 
 export default removeFromFavRequestSaga;

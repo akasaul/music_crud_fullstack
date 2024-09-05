@@ -1,5 +1,6 @@
 import { all, call, put, select, takeEvery } from "redux-saga/effects";
 import {
+  getFavsRequest,
   getLibReq,
   getMySongsReq,
   setFavRequest,
@@ -11,7 +12,7 @@ function* workAddToFav() {
   try {
     const { favId } = yield select((state) => state.song);
     yield call(() => addSongToFav(favId));
-    yield all([put(getLibReq()), put(getMySongsReq())]);
+    yield all([put(getLibReq()), put(getFavsRequest()), put(getMySongsReq())]);
   } catch (err: any) {}
 }
 
