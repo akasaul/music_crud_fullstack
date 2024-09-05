@@ -9,3 +9,8 @@ export interface Song {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface LibSong extends Song {
+  isMySong: true;
+  isFav: true;
+}

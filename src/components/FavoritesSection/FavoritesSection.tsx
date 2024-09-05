@@ -1,39 +1,25 @@
 import styled from "@emotion/styled";
 import { useEffect } from "react";
-import { MdArrowCircleLeft, MdArrowForward, MdReadMore } from "react-icons/md";
+import { MdArrowForward } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useSnapCarousel } from "react-snap-carousel";
 import { Box, Flex, Image, Link, Text } from "rebass";
 import { color, fontSize, fontWeight } from "styled-system";
-import { Spinner } from "theme-ui";
-import { getAllReq } from "../../app/features/song/songSlice";
-// import { auth } from "../../firebase/firebase";
-import useAuthStatus from "../../hooks/useAuthStatus";
+import { getFavsRequest } from "../../app/features/song/songSlice";
 import Slider from "../slider/Slider";
-// import BaseCard from "../BaseCard";
 
 const FavoritesSection = () => {
-  const { isChecking, isLoggedIn } = useAuthStatus();
+  const { isAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllReq());
+    dispatch(getFavsRequest());
   }, [dispatch]);
 
-  const { songs } = useSelector((state) => state.song);
-  // const { favs } = useSelector((state) => state.user);
+  const { favSongs } = useSelector((state) => state.song);
   const navigate = useNavigate();
 
-  if (isChecking) {
-    return (
-      <Box>
-        <Spinner color="green" />
-      </Box>
-    );
-  }
-
-  if (!isLoggedIn) {
+  if (!isAuth) {
     return;
   }
 
@@ -81,24 +67,21 @@ const FavoritesSection = () => {
         </More>
       </Header>
 
-      {/* {favs.length === 0 && ( */}
-      {/*   <Flex alignItems={"center"} sx={{ gap: "20px" }}> */}
-      {/*     <Image */}
-      {/*       src={ */}
-      {/*         "https://cdn-icons-png.flaticon.com/512/408/408697.png?w=740&t=st=1683050602~exp=1683051202~hmac=b2742b98226da86801474ffa532a4b203cb68486ee2fb1780eba6c9275272bf9" */}
-      {/*       } */}
-      {/*       height={"80px"} */}
-      {/*     /> */}
-      {/*     <Text sx={{ color: "#fff" }}>You have no favorites</Text> */}
-      {/*   </Flex> */}
-      {/* )} */}
+      {favSongs.length === 0 && (
+        <Flex alignItems={"center"} sx={{ gap: "20px" }}>
+          <Image
+            src={
+              "https://cdn-icons-png.flaticon.com/512/408/408697.png?w=740&t=st=1683050602~exp=1683051202~hmac=b2742b98226da86801474ffa532a4b203cb68486ee2fb1780eba6c9275272bf9"
+            }
+            height={"80px"}
+          />
+          <Text sx={{ color: "#fff" }}>You have no favorites</Text>
+        </Flex>
+      )}
 
-      {/* {isLoggedIn && favs.length !== 0 && ( */}
-      {/*   <Slider songs={songs.filter((song) => favs.includes(song.id))} /> */}
-      {/* )} */}
+      {isAuth && favSongs.length !== 0 && <Slider songs={favSongs} />}
     </Box>
   );
 };
 
 export default FavoritesSection;
-

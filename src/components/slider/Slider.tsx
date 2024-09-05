@@ -8,8 +8,7 @@ interface SliderProps {
 }
 
 const Slider = ({ songs }: SliderProps) => {
-  const { scrollRef, pages, activePageIndex, next, prev, goTo } =
-    useSnapCarousel();
+  const { scrollRef } = useSnapCarousel();
 
   if (!songs) {
     return;

@@ -1,12 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Song } from "../../types/song";
+import { LibSong, Song } from "../../types/song";
 import { AddSongBody } from "../../../lib/validation";
 
 interface SongState {
   songs: Song[];
+  mySongs: LibSong[];
+  libSongs: LibSong[];
   recents: Song[];
   song: Song | null;
+  favId: string | null;
   addSongData: AddSongBody | null;
+  favSongs: LibSong[];
   updateSongData: { song: AddSongBody; id: string } | null;
   query: string;
   isLoading: boolean;
@@ -15,13 +19,17 @@ interface SongState {
   errorMsg: string;
   currentState: string;
   isPlaying: boolean;
-  songId: number | null;
+  songId: string | null;
   fetchRecentState: string;
   searchResults: Song[];
 }
 
 const initialState: SongState = {
   songs: [],
+  mySongs: [],
+  favSongs: [],
+  favId: null,
+  libSongs: [],
   recents: [],
   song: null,
   addSongData: null,
@@ -141,6 +149,32 @@ const songSlice = createSlice({
       state.isLoading = false;
       state.songs = action.payload;
     },
+    getLibReq: (state) => {
+      state.isLoading = true;
+      state.currentState = "GET_LIB";
+    },
+    getLibSuccess: (state, action: PayloadAction<LibSong[]>) => {
+      state.libSongs = action.payload;
+      state.isLoading = false;
+      state.isSuccess = true;
+    },
+    getLibFailure: (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    },
+    getMySongsReq: (state) => {
+      state.isLoading = true;
+      state.currentState = "GET_MY_SONGS";
+    },
+    getMySongsSuccess: (state, action: PayloadAction<LibSong[]>) => {
+      state.mySongs = action.payload;
+      state.isLoading = false;
+      state.isSuccess = true;
+    },
+    getMySongsFailure: (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    },
     getSongsByGenreFailure: (state) => {
       state.isLoading = false;
       state.isError = true;
@@ -174,11 +208,11 @@ const songSlice = createSlice({
       state.errorMsg = action.payload;
     },
 
-    deleteSongReq: (state, action: PayloadAction<number>) => {
+    deleteSongReq: (state, action: PayloadAction<string>) => {
       state.songId = action.payload;
       state.isLoading = true;
       state.currentState = "DELETE";
-      state.songs = state.songs.filter((song) => song.id !== action.payload);
+      state.songs = state.songs.filter((song) => song._id !== action.payload);
     },
 
     deleteSongSuccess: (state) => {
@@ -201,6 +235,17 @@ const songSlice = createSlice({
       );
 
       state.searchResults = [...res, ...state.songs].slice(0, 6);
+    },
+    setFavId: (state, action: PayloadAction<string>) => {
+      state.favId = action.payload;
+    },
+    setFavRequest: () => {},
+    removeFavRequest: () => {},
+    getFavsRequest: (state) => {
+      state.isLoading = true;
+    },
+    getFavsSuccess: (state, action: PayloadAction<LibSong[]>) => {
+      state.favSongs = action.payload;
     },
   },
 });
@@ -234,6 +279,17 @@ export const {
   getSongsByGenreSuccess,
   getSongsByGenreFailure,
   setSongForUpdate,
+  getLibReq,
+  getLibSuccess,
+  getLibFailure,
+  getMySongsReq,
+  getMySongsSuccess,
+  getMySongsFailure,
+  setFavId,
+  setFavRequest,
+  removeFavRequest,
+  getFavsRequest,
+  getFavsSuccess,
 } = songSlice.actions;
 
 export default songSlice.reducer;

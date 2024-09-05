@@ -25,6 +25,7 @@ import {
   signInRequest,
   signUpRequest,
   reset,
+  setIsAuth,
 } from "../../app/features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Label, Checkbox } from "theme-ui";
@@ -142,7 +143,7 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
     resolver: zodResolver(signUpSchema),
   });
 
-  const { logIn } = useAuthStatus();
+  // const { logIn } = useAuthStatus();
 
   // Show Password
   const [showPassword, setShowPassword] = useState(false);
@@ -171,7 +172,7 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
       }),
     );
     dispatch(signInRequest());
-    logIn();
+    dispatch(setIsAuth());
   };
 
   const onSignUpSubmit = ({ email, password, name }: SignUpBody) => {
@@ -183,7 +184,7 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
       }),
     );
     dispatch(signUpRequest());
-    logIn();
+    dispatch(setIsAuth());
   };
 
   return (
@@ -328,17 +329,6 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
                 }}
               ></BottomText>
             </Flex>
-
-            <Box>
-              <Label color="textPrimary" fontSize={["xs", "sm"]}>
-                <Checkbox
-                  onChange={(e) => console.log(e.target.value)}
-                  id="remember"
-                  name="remember"
-                />
-                I agree with the terms and Conditions of Use and Privacy Policy.
-              </Label>
-            </Box>
 
             {isLogin ? (
               <BottomText color="textPrimary">
@@ -499,17 +489,6 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
                 }}
               ></BottomText>
             </Flex>
-
-            <Box>
-              <Label color="textPrimary" fontSize={["xs", "sm"]}>
-                <Checkbox
-                  onChange={(e) => console.log(e.target.value)}
-                  id="remember"
-                  name="remember"
-                />
-                I agree with the terms and Conditions of Use and Privacy Policy.
-              </Label>
-            </Box>
 
             {isLogin ? (
               <BottomText color="textPrimary">

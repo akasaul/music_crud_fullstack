@@ -11,6 +11,11 @@ import getAllSaga from "./song/getAllSaga";
 import searchSaga from "./song/searchSaga";
 import getByGenreSaga from "./song/getByGenre";
 import signOutSaga from "./auth/signOut";
+import getLibSongsSaga from "./song/getLibSaga";
+import getMySongsSaga from "./song/getMySongsSaga";
+import addToFavSaga from "./song/favSongsSaga";
+import removeFromFavRequestSaga from "./song/removeFavSongsSaga";
+import getFavsSaga from "./song/getFavsSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -21,10 +26,15 @@ export default function* rootSaga() {
     signInSaga(),
     editSong(),
     favSong(),
+    addToFavSaga(),
     fetchRecentSaga(),
     getAllSaga(),
     signOutSaga(),
     getByGenreSaga(),
     searchSaga(),
+    getLibSongsSaga(),
+    getMySongsSaga(),
+    removeFromFavRequestSaga(),
+    getFavsSaga(),
   ]);
 }

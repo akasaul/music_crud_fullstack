@@ -10,7 +10,7 @@ import { getSongsFromGenre } from "../../../services/api/song.service";
 // Worker function
 function* workGetAll() {
   try {
-    const { data: songs } = yield call(() => getSongsFromGenre("Rap"));
+    const { data: songs } = yield call(() => getSongsFromGenre("HipHop"));
     yield put(getSongsByGenreSuccess(songs));
   } catch (err: any) {
     yield put(getSongsByGenreFailure(err.message));

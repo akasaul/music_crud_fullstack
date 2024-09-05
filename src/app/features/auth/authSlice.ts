@@ -8,6 +8,7 @@ interface AuthState {
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
+  isAuth: boolean | null;
   errorMsg: string;
   token: string | null;
 }
@@ -32,6 +33,7 @@ const initialState: AuthState = {
   isSuccess: false,
   errorMsg: "",
   token: null,
+  isAuth: null,
 };
 
 const authSlice = createSlice({
@@ -42,7 +44,9 @@ const authSlice = createSlice({
     signUpRequest: (state) => {
       state.isLoading = true;
     },
-
+    setIsAuth: (state) => {
+      state.isAuth = true;
+    },
     signUpSuccess: (state, action: PayloadAction<AuthPayload>) => {
       state.auth = action.payload;
       state.isLoading = false;
@@ -101,6 +105,7 @@ export const {
   signInSuccess,
   signOut,
   reset,
+  setIsAuth,
 } = authSlice.actions;
 
 export default authSlice.reducer;

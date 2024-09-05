@@ -19,17 +19,22 @@ import {
   SpaceProps,
   FlexboxProps,
 } from "styled-system";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "./components/Sidebar";
 import SongPlayerFooter from "./components/SongPlayerFooter/SongPlayerFooter";
+import { getItem } from "./lib/localStorage";
+import { setIsAuth } from "./app/features/auth/authSlice";
 
 const App: React.FC = () => {
-  const { isLoggedIn } = useAuthStatus();
+  const { isAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(setUserReq());
-  }, [isLoggedIn, dispatch]);
+    const token = getItem("token");
+    if (token) {
+      dispatch(setIsAuth());
+    }
+  }, [isAuth]);
 
   type ContainerProps = ColorProps &
     LayoutProps &

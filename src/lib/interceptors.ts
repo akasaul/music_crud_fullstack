@@ -20,9 +20,9 @@ interface SessionObject {
 export const requestInterceptor = (
   config: InternalAxiosRequestConfig,
 ): InternalAxiosRequestConfig => {
-  const session = getItem<SessionObject>("auth");
-  if (session?.state.token) {
-    config.headers.set("Authorization", `Bearer ${session.state.token}`);
+  const token = getItem<SessionObject>("token");
+  if (token) {
+    config.headers.set("Authorization", `Bearer ${token}`);
   }
   return config;
 };

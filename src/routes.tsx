@@ -1,6 +1,7 @@
 import { FC, lazy } from "react";
 import { RouteObject } from "react-router-dom";
 import AddSong from "./pages/AddSongs";
+import Library from "./pages/Library";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -22,6 +23,10 @@ export const routes: RouteObject[] = [
   {
     path: "/edit-song",
     element: <AddSong isEdit={true} />,
+  },
+  {
+    path: "/library",
+    element: <Library />,
   },
   {
     path: "*",

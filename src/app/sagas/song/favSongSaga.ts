@@ -6,6 +6,7 @@ import {
   setFavsError,
   setFavsReq,
 } from "../../features/user/userSlice";
+import { addSongToFav } from "../../../services/api/song.service";
 // import { PayloadAction } from "@reduxjs/toolkit";
 
 // Define the state structure
@@ -28,35 +29,17 @@ function* workFavSong() {
   yield put(setFavs(favId));
 
   try {
-    // const colRef = collection(db, "users");
-    // const q = query(colRef, where("id", "==", auth.currentUser?.uid));
-
-    // const snapShot: QuerySnapshot<DocumentData> = yield call(() => getDocs(q));
-
     let id: string | undefined;
     let found = false;
-
-    // snapShot.docs.forEach((doc) => {
-    //   id = doc.id;
-    //   if (doc.data().favorites.includes(favId)) {
-    //     found = true;
-    //   }
-    // });
 
     if (!id) {
       throw new Error("User document ID not found");
     }
 
-    // const docRef = doc(db, "users", id);
-
-    // Check if the favorite exists in the favs array
     if (found) {
-      yield call(
-        () => {},
-        // updateDoc(docRef, {
-        //   favorites: arrayRemove(favId),
-        // }),
-      );
+      yield call(() => {
+        addSongToFav(id);
+      });
     } else {
       yield call(
         () => {},
@@ -77,4 +60,3 @@ function* favSong() {
 }
 
 export default favSong;
-
