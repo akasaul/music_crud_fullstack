@@ -14,8 +14,6 @@ import { Box, Button, Flex, Image, Text } from "rebass";
 import { color, flex, fontFamily, fontSize, fontWeight } from "styled-system";
 import {
   deleteSongReq,
-  getLibReq,
-  getMySongsReq,
   playSong,
   removeFavRequest,
   setFavId,
@@ -24,7 +22,7 @@ import {
 import { formatTime } from "../../utils/formatTime";
 import LoginModal from "../LoginModal";
 import "./SongTile.css";
-import { LibSong, Song } from "../../app/types/song";
+import { LibSong } from "../../app/types/song";
 
 interface SongTileProps {
   song: LibSong;

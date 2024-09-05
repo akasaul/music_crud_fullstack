@@ -4,6 +4,7 @@ import { AddSongBody } from "../../../lib/validation";
 
 interface SongState {
   songs: Song[];
+  genreSongs: Song[];
   mySongs: LibSong[];
   libSongs: LibSong[];
   recents: Song[];
@@ -44,6 +45,7 @@ const initialState: SongState = {
   songId: null,
   fetchRecentState: "",
   searchResults: [],
+  genreSongs: []
 };
 
 const songSlice = createSlice({
@@ -72,8 +74,8 @@ const songSlice = createSlice({
 
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.query = action.payload;
+      state.isLoading = true;
     },
-
     setSong: (state, action: PayloadAction<AddSongBody>) => {
       state.addSongData = action.payload;
     },
@@ -133,7 +135,6 @@ const songSlice = createSlice({
 
     stopSong: (state) => {
       state.isPlaying = false;
-      // state.song = null; // Uncomment this if you want to reset the current song
     },
 
     getAllReq: (state) => {
@@ -147,7 +148,7 @@ const songSlice = createSlice({
     },
     getSongsByGenreSuccess: (state, action: PayloadAction<Song[]>) => {
       state.isLoading = false;
-      state.songs = action.payload;
+      state.genreSongs = action.payload;
     },
     getLibReq: (state) => {
       state.isLoading = true;
@@ -181,7 +182,6 @@ const songSlice = createSlice({
     },
     getAllSuccess: (state, action: PayloadAction<Song[]>) => {
       state.songs = action.payload;
-      state.searchResults = action.payload;
       state.isLoading = false;
       state.isSuccess = true;
     },
@@ -223,28 +223,32 @@ const songSlice = createSlice({
       state.isLoading = false;
       state.songs = action.payload;
     },
-
-    searchSong: (state, action: PayloadAction<string>) => {
-      const query = action.payload.toLowerCase();
-      const res = state.songs.filter(
-        (song) =>
-          song.title.toLowerCase().includes(query) ||
-          song.album.toLowerCase().includes(query) ||
-          song.artist.toLowerCase().includes(query) ||
-          song.genre.toLowerCase().includes(query),
-      );
-
-      state.searchResults = [...res, ...state.songs].slice(0, 6);
+    searchSong: (state) => {
+      state.isLoading = true;
+      state.isError = false;
+      state.isSuccess = false;
+      state.currentState = "SEARCH";
+    },
+    searchSongsSuccess: (state, action: PayloadAction<Song[]>) => {
+      state.searchResults = action.payload;
+      state.isLoading = false;
+      state.isSuccess = true;
+    },
+    searchSongsFailure: (state: SongState) => {
+      state.searchResults = [];
+      state.errorMsg = state.errorMsg;
+      state.isLoading = false;
+      state.isError = true;
     },
     setFavId: (state, action: PayloadAction<string>) => {
       state.favId = action.payload;
     },
     setFavRequest: () => {},
     removeFavRequest: () => {},
-    getFavsRequest: (state) => {
+    getFavsRequest: (state: SongState) => {
       state.isLoading = true;
     },
-    getFavsSuccess: (state, action: PayloadAction<LibSong[]>) => {
+    getFavsSuccess: (state: SongState, action: PayloadAction<LibSong[]>) => {
       state.favSongs = action.payload;
     },
   },
@@ -290,6 +294,8 @@ export const {
   removeFavRequest,
   getFavsRequest,
   getFavsSuccess,
+  searchSongsSuccess,
+  searchSongsFailure,
 } = songSlice.actions;
 
 export default songSlice.reducer;

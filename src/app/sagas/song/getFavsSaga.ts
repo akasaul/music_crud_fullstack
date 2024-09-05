@@ -1,10 +1,5 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import {
-  getAllFailure,
-  getAllSuccess,
-  getFavsRequest,
-  getFavsSuccess,
-} from "../../features/song/songSlice";
+import { getFavsRequest, getFavsSuccess } from "../../features/song/songSlice";
 import { getFavSongs } from "../../../services/api/song.service";
 
 // Worker function

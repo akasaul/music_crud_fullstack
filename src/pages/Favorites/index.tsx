@@ -4,10 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Flex, Image, Text } from "rebass";
 import { color, fontSize, fontWeight } from "styled-system";
 import Header from "../../components/Header";
-import "../App.css";
+import "../../App.css";
 import { MdAccountCircle } from "react-icons/md";
 import { Spinner } from "theme-ui";
-import { getFavsRequest, reset } from "../../app/features/song/songSlice";
+import {
+  fetchRecentRequest,
+  getFavsRequest,
+  reset,
+} from "../../app/features/song/songSlice";
 import SongTile from "../../components/SongTile/SongTile";
 import { LibSong } from "../../app/types/song";
 
@@ -17,9 +21,10 @@ const FavoriteSongs = () => {
   useEffect(() => {
     dispatch(reset());
     dispatch(getFavsRequest());
+    dispatch(fetchRecentRequest());
   }, [dispatch]);
 
-  const { favSongs, isLoading, currentState } = useSelector(
+  const { favSongs, recents, isLoading, currentState } = useSelector(
     (state) => state.song,
   );
 
@@ -65,7 +70,7 @@ const FavoriteSongs = () => {
               <Text sx={{ color: "#fff" }}>You have no favorites</Text>
             </Flex>
           ) : (
-            favSongs.map((song: LibSong, index) => (
+            favSongs.map((song: LibSong, index: number) => (
               <SongTile song={song} index={index} isSearch={false} />
             ))
           )
@@ -118,17 +123,8 @@ const FavoriteSongs = () => {
             <Spinner color="green" />
           </Box>
         ) : (
-          songs.map((song, index) => (
-            <SongTile
-              imageUrl={song.imageUrl}
-              title={song.title}
-              index={index}
-              key={song.id}
-              duration={song.duration}
-              artist={song.artist?.name || song.artist}
-              album={song.album?.title || song.album}
-              id={song.id}
-            />
+          recents.map((song: LibSong, index: number) => (
+            <SongTile song={song} index={index} isSearch={false} />
           ))
         )}
       </Box>

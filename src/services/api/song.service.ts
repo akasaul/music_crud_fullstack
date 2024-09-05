@@ -16,6 +16,7 @@ export const getFavSongs = async () => {
   const songs = await api.get<LibSong[]>("/songs/favorites");
   return songs;
 };
+
 export const getMySongs = async () => {
   const songs = await api.get<LibSong[]>("/songs/library/my-songs");
   return songs;
@@ -50,4 +51,9 @@ export const addSongToFav = async (id: string) => {
 
 export const removeSongFromFav = async (id: string) => {
   await api.post<Song>(`/songs/${id}/remove-from-favorite`);
+};
+
+export const searchSongs = async (query: string) => {
+  const songs = await api.get<LibSong[]>(`/songs/search?query=${query}`);
+  return songs;
 };

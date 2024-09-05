@@ -1,9 +1,9 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import {
   fetchRecentFailure,
+  fetchRecentRequest,
   fetchRecentSuccess,
 } from "../../features/song/songSlice";
-import { Song } from "../../types/song";
 import { getRecentSongs } from "../../../services/api/song.service";
 
 // Worker function
@@ -19,8 +19,7 @@ function* workFetchRecent() {
 
 // Fetch Recent Songs saga
 function* fetchRecentSaga() {
-  yield takeEvery("song/fetchRecentRequest", workFetchRecent);
+  yield takeEvery(fetchRecentRequest.type, workFetchRecent);
 }
 
 export default fetchRecentSaga;
-

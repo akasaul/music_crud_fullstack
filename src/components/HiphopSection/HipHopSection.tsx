@@ -7,16 +7,10 @@ import { useSnapCarousel } from "react-snap-carousel";
 import { Box, Flex, Image, Text } from "rebass";
 import { color, fontSize, fontWeight } from "styled-system";
 import { Spinner } from "theme-ui";
-import {
-  getAllReq,
-  getSongsByGenreReq,
-} from "../../app/features/song/songSlice";
-import useAuthStatus from "../../hooks/useAuthStatus";
-import BaseCard from "../BaseCard";
+import { getSongsByGenreReq } from "../../app/features/song/songSlice";
 import Slider from "../slider/Slider";
 
 const HiphopSection = () => {
-  const { isChecking, isLoggedIn } = useAuthStatus();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,16 +18,7 @@ const HiphopSection = () => {
     dispatch(getSongsByGenreReq());
   }, [dispatch]);
 
-  const { songs } = useSelector((state) => state.song);
-  // const { favs } = useSelector((state) => state.user);
-
-  // if (isChecking) {
-  //   return (
-  //     <Box>
-  //       <Spinner color="green" />
-  //     </Box>
-  //   );
-  // }
+  const { genreSongs, isLoading } = useSelector((state) => state.song);
 
   const Title = styled(Text)`
     ${fontSize}
@@ -79,7 +64,20 @@ const HiphopSection = () => {
         </More>
       </Header>
 
-      {/* <Slider songs={songs} /> */}
+      {isLoading ? (
+        <Box
+          height="100px"
+          width="100%"
+          sx={{
+            display: "grid",
+            placeContent: "center",
+          }}
+        >
+          <Spinner color="green" />
+        </Box>
+      ) : (
+        <Slider songs={genreSongs} />
+      )}
     </Box>
   );
 };

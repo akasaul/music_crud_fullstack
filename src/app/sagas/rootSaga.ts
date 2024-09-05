@@ -7,8 +7,7 @@ import setUserSaga from "./user/setUser";
 import editSong from "./song/editSongSaga";
 import favSong from "./song/favSongSaga";
 import fetchRecentSaga from "./song/fetchRecentSaga";
-import getAllSaga from "./song/getAllSaga";
-import searchSaga from "./song/searchSaga";
+import searchSongsSaga from "./song/searchSongsSaga";
 import getByGenreSaga from "./song/getByGenre";
 import signOutSaga from "./auth/signOut";
 import getLibSongsSaga from "./song/getLibSaga";
@@ -28,13 +27,12 @@ export default function* rootSaga() {
     favSong(),
     addToFavSaga(),
     fetchRecentSaga(),
-    getAllSaga(),
     signOutSaga(),
     getByGenreSaga(),
-    searchSaga(),
     getLibSongsSaga(),
     getMySongsSaga(),
     removeFromFavRequestSaga(),
+    searchSongsSaga(),
     getFavsSaga(),
   ]);
 }
