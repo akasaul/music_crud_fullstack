@@ -3,20 +3,21 @@ import { useEffect } from "react";
 import { MdArrowForward } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Box, Flex, Image, Link, Text } from "rebass";
+import { Box, Flex, Image, Text } from "rebass";
 import { color, fontSize, fontWeight } from "styled-system";
 import { getFavsRequest } from "../../app/features/song/songSlice";
 import Slider from "../slider/Slider";
+import { RootState } from "../../app";
 
 const FavoritesSection = () => {
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getFavsRequest());
   }, [dispatch]);
 
-  const { favSongs } = useSelector((state) => state.song);
+  const { favSongs } = useSelector((state: RootState) => state.song);
   const navigate = useNavigate();
 
   if (!isAuth) {

@@ -6,6 +6,7 @@ import SongCard from "../SongCard";
 import { fetchRecentRequest, reset } from "../../app/features/song/songSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Song } from "../../app/types/song";
+import { RootState } from "../../app";
 
 const RecentSongs = () => {
   const RecentGrid = styled(Grid)`
@@ -23,14 +24,8 @@ const RecentSongs = () => {
     dispatch(fetchRecentRequest());
   }, [dispatch]);
 
-  const {
-    recents,
-    isLoading,
-    isError,
-    currentState,
-    fetchRecentState,
-    isSuccess,
-  } = useSelector((state) => state.song);
+  const { recents, isLoading, isError, fetchRecentState, isSuccess } =
+    useSelector((state: RootState) => state.song);
 
   return (
     <Flex

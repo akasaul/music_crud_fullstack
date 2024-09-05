@@ -10,14 +10,14 @@ import styled from "@emotion/styled";
 import { color, fontSize, fontWeight } from "styled-system";
 import {
   fetchRecentRequest,
-  getAllReq,
   reset,
   searchSong,
   setSearchQuery,
 } from "../../app/features/song/songSlice";
 import Header from "../../components/Header";
-import { LibSong } from "../../app/types/song";
+import { LibSong, Song } from "../../app/types/song";
 import TopResultCard from "../../components/TopResultCard/TopResultCard";
+import { RootState } from "../../app";
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Search = () => {
     isSuccess,
     isError,
     searchResults,
-  } = useSelector((state) => state.song);
+  } = useSelector((state: RootState) => state.song);
 
   useEffect(() => {
     dispatch(reset());
@@ -37,6 +37,7 @@ const Search = () => {
 
   const [query, setQuery] = useState("");
 
+  //FIX: get e types
   const handleChange = (e) => {
     setQuery(e.target.value);
     dispatch(setSearchQuery(query));
@@ -113,7 +114,10 @@ const Search = () => {
               Top Result
             </Text>
 
-            <TopResultCard song={searchResults[0]} key={searchResults[0]?.id} />
+            <TopResultCard
+              song={searchResults[0]}
+              key={searchResults[0]?._id}
+            />
           </Box>
 
           <Box
@@ -124,10 +128,10 @@ const Search = () => {
             }}
           >
             <h2 style={{ color: "white" }}>Songs</h2>
-            {songs.slice(1, 6).map((song: LibSong, index: number) => (
+            {songs.slice(1, 6).map((song: Song, index: number) => (
               <SongTile
                 index={index}
-                song={song}
+                song={song as LibSong}
                 key={song._id}
                 isSearch={true}
               />

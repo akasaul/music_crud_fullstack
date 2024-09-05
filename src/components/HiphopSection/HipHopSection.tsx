@@ -1,14 +1,14 @@
 import styled from "@emotion/styled";
 import { useEffect } from "react";
-import { MdArrowCircleLeft, MdArrowForward, MdReadMore } from "react-icons/md";
+import { MdArrowForward } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useSnapCarousel } from "react-snap-carousel";
-import { Box, Flex, Image, Text } from "rebass";
+import { Box, Text } from "rebass";
 import { color, fontSize, fontWeight } from "styled-system";
 import { Spinner } from "theme-ui";
 import { getSongsByGenreReq } from "../../app/features/song/songSlice";
 import Slider from "../slider/Slider";
+import { RootState } from "../../app";
 
 const HiphopSection = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,9 @@ const HiphopSection = () => {
     dispatch(getSongsByGenreReq());
   }, [dispatch]);
 
-  const { genreSongs, isLoading } = useSelector((state) => state.song);
+  const { genreSongs, isLoading } = useSelector(
+    (state: RootState) => state.song,
+  );
 
   const Title = styled(Text)`
     ${fontSize}

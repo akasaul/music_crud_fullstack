@@ -24,12 +24,13 @@ import SearchResult from "../../components/SearchResult/SearchResult";
 import "../../App.css";
 import Header from "../../components/Header";
 import styled from "@emotion/styled";
-import { color, flex, fontSize, fontWeight } from "styled-system";
+import { color, fontSize, fontWeight } from "styled-system";
 import useAuthStatus from "../../hooks/useAuthStatus";
 import LoginModal from "../../components/LoginModal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AddSongBody, addSongSchema } from "../../lib/validation";
+import { RootState } from "../../app";
 
 interface AddSongProps {
   isEdit: boolean;
@@ -78,19 +79,18 @@ const AddSong = ({ isEdit }: AddSongProps) => {
 
   // States from song slice
   const { songs, isLoading, isSuccess, isError, currentState, errorMsg } =
-    useSelector((state) => state.song);
+    useSelector((state: RootState) => state.song);
 
   const dispatch = useDispatch();
 
-  // Search hadnler
   const handleSearch = (e) => {
     dispatch(reset());
     setQuery(e.target.value);
     dispatch(setSearchQuery(e.target.value));
-    dispatch(searchRequest(query));
+    dispatch(searchRequest());
   };
 
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStatus();
 
@@ -188,6 +188,7 @@ const AddSong = ({ isEdit }: AddSongProps) => {
                 {isLoading && !isSuccess ? (
                   <Spinner color="green" />
                 ) : (
+                  // FIX: fix types here
                   songs.map((song) => (
                     <SearchResult
                       key={song?.id}

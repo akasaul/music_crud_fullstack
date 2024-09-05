@@ -1,44 +1,25 @@
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, Flex, Image, Text } from "rebass";
+import { Box, Flex, Image, Text } from "rebass";
 import { Link } from "react-router-dom";
-import { color } from "styled-system";
 import Header from "../../components/Header";
-// import { auth } from "../firebase/firebase";
-// import useAuthStatus from "../hooks/useAuthStatus";
 import { Spinner } from "theme-ui";
 import { useEffect } from "react";
 import {
-  getAllReq,
   getLibReq,
   getMySongsReq,
   reset,
 } from "../../app/features/song/songSlice";
 import SongTile from "../../components/SongTile/SongTile";
 import { LibSong } from "../../app/types/song";
+import { RootState } from "../../app";
 
 const Library = () => {
   const { mySongs, libSongs, isLoading, currentState } = useSelector(
-    (state) => state.song,
+    (state: RootState) => state.song,
   );
   const SongsContainer = styled(Box)`
     width: 100%;
-  `;
-
-  const FilterContainer = styled(Flex)`
-    padding: 1rem 1rem;
-    flex-wrap: wrap;
-  `;
-
-  const FilterButton = styled(Button)`
-    ${color}
-    background: #171717;
-    border: 1px solid #1ed760;
-    &:hover {
-      background: #1ed760;
-      color: #000;
-      cursor: pointer;
-    }
   `;
 
   const LibraryHeader = styled(Text)`
@@ -46,9 +27,7 @@ const Library = () => {
     color: #fff;
   `;
 
-  // const genres = ["HipHop", "R&B", "Pop", "Country", "Ethiopian", "Other"];
-
-  const { isAuth: isLoggedIn } = useSelector((state) => state.auth);
+  const { isAuth: isLoggedIn } = useSelector((state: RootState) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -114,14 +93,6 @@ const Library = () => {
       )}
 
       <LibraryHeader as="h3">All Songs</LibraryHeader>
-
-      {/* <FilterContainer sx={{ gap: "10px" }}> */}
-      {/*   {genres.map((genre) => ( */}
-      {/*     <FilterButton key={genre} color="textSecondary"> */}
-      {/*       {genre} */}
-      {/*     </FilterButton> */}
-      {/*   ))} */}
-      {/* </FilterContainer> */}
 
       <SongsContainer>
         {isLoading && currentState === "GET_ALL" ? (

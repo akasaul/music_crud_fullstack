@@ -14,6 +14,7 @@ import {
 } from "../../app/features/song/songSlice";
 import SongTile from "../../components/SongTile/SongTile";
 import { LibSong } from "../../app/types/song";
+import { RootState } from "../../app";
 
 const FavoriteSongs = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const FavoriteSongs = () => {
     libSongs: recents,
     isLoading,
     currentState,
-  } = useSelector((state) => state.song);
+  } = useSelector((state: RootState) => state.song);
 
   useEffect(() => {
     dispatch(reset());
@@ -31,7 +32,7 @@ const FavoriteSongs = () => {
     dispatch(getLibReq());
   }, [dispatch]);
 
-  const { isAuth: isLoggedIn } = useSelector((state) => state.auth);
+  const { isAuth: isLoggedIn } = useSelector((state: RootState) => state.auth);
 
   const HeaderText = styled(Text)`
     ${color}

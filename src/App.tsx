@@ -4,7 +4,6 @@ import { routes } from "./routes";
 import styled from "@emotion/styled";
 import { ThemeProvider } from "@emotion/react";
 import theme from "./theme";
-import useAuthStatus from "./hooks/useAuthStatus";
 import "./App.css";
 
 import {
@@ -25,9 +24,10 @@ import SongPlayerFooter from "./components/SongPlayerFooter/SongPlayerFooter";
 import { getItem } from "./lib/localStorage";
 import { setIsAuth } from "./app/features/auth/authSlice";
 import { Spinner } from "theme-ui";
+import { RootState } from "./app";
 
 const App: React.FC = () => {
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {

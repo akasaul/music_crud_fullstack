@@ -5,11 +5,6 @@ import {
   MdEdit,
   MdExpandLess,
   MdExpandMore,
-  MdFavorite,
-  MdFavoriteBorder,
-  MdMore,
-  MdOutlineFavorite,
-  MdOutlinePlayArrow,
   MdPause,
   MdPauseCircle,
   MdPlayArrow,
@@ -19,16 +14,17 @@ import {
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Flex, Text } from "rebass";
+import { Box, Flex, Text } from "rebass";
 import { color, display, fontSize, position } from "styled-system";
 import { Image } from "theme-ui";
 import { stopSong } from "../../app/features/song/songSlice";
-import { setFavs, setFavsReq } from "../../app/features/user/userSlice";
+import { setFavsReq } from "../../app/features/user/userSlice";
 import useAuthStatus from "../../hooks/useAuthStatus";
 import { formatTime } from "../../utils/formatTime";
 // import LoginModal from "../LoginModal";
 import "./songPlayfooter.css";
 import LoginModal from "../LoginModal";
+import { RootState } from "../../app";
 
 const SongPlayerFooter = () => {
   const SongPlayer = styled(Box)`
@@ -83,10 +79,9 @@ const SongPlayerFooter = () => {
 
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
-  // const { favs } = useSelector((state) => state.user);
   const { isLoggedIn } = useAuthStatus();
 
-  const { song, isPlaying } = useSelector((state) => state.song);
+  const { song, isPlaying } = useSelector((state: RootState) => state.song);
   const navigate = useNavigate();
 
   const SongInfo = styled(Flex)`
@@ -101,14 +96,6 @@ const SongPlayerFooter = () => {
   if (!song || !isPlaying) {
     return;
   }
-
-  const toggleFav = () => {
-    if (!isLoggedIn) {
-      setOpenModal(true);
-      return;
-    }
-    dispatch(setFavsReq(song.id));
-  };
 
   const closePlayer = () => {
     dispatch(stopSong());

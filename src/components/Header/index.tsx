@@ -3,7 +3,6 @@ import { Box, Flex, Image } from "rebass";
 import { MdLogout, MdAdd } from "react-icons/md";
 import styled from "@emotion/styled";
 import PrimaryButton from "../Buttons/PrimaryButton";
-import TextButton from "../Buttons/TextButton";
 import { useState } from "react";
 import LoginModal from "../LoginModal";
 import useAuthStatus from "../../hooks/useAuthStatus";
@@ -12,12 +11,13 @@ import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { signOut } from "../../app/features/auth/authSlice";
 import { getItem } from "../../lib/localStorage";
+import TextButton from "../Buttons/TextButton";
 
 interface HeaderProps {
-  isHome: boolean;
+  isHome?: boolean;
 }
 
-const Header = ({ isHome }: HeaderProps) => {
+const Header = ({ isHome = false }: HeaderProps) => {
   const HeaderText = styled(Box)``;
   const { isLoggedIn, isChecking, logOut } = useAuthStatus();
 

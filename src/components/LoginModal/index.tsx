@@ -8,6 +8,7 @@ import {
   width,
   variant,
   color,
+  left,
 } from "styled-system";
 import {
   MdOutlineAccountCircle,
@@ -15,7 +16,7 @@ import {
   MdVisibility,
   MdVisibilityOff,
 } from "react-icons/md";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Input, Spinner } from "theme-ui";
 import BaseInputWrapper from "../BaseInput";
 import SubmitButton from "../Buttons/SubmitButton";
@@ -24,11 +25,9 @@ import {
   setUserData,
   signInRequest,
   signUpRequest,
-  reset,
   setIsAuth,
 } from "../../app/features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Label, Checkbox } from "theme-ui";
 import { useForm } from "react-hook-form";
 import {
   LoginBody,
@@ -37,16 +36,16 @@ import {
   signUpSchema,
 } from "../../lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useAuthStatus from "../../hooks/useAuthStatus";
+import { RootState } from "../../app";
 
 interface LoginProps {
   isOpen: boolean;
-  isLogin: boolean;
+  isLogin?: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLogin?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
+const LoginModal = ({ isOpen, setIsOpen, isLogin = true, setIsLogin }: LoginProps) => {
   const BaseInput = styled(Input)`
     ${variant}
     ${color}
@@ -75,6 +74,7 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
 
   const Modal = styled(Box)`
     ${position}
+    ${left}
     min-width: 300px;
     background: #000;
     position: fixed;
@@ -108,6 +108,7 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
     ${fontSize}
     ${width}
     ${maxWidth}
+    ${position}
     text-align: center;
     color: white;
   `;
@@ -143,16 +144,13 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
     resolver: zodResolver(signUpSchema),
   });
 
-  // const { logIn } = useAuthStatus();
-
-  // Show Password
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const dispatch = useDispatch();
 
   const { isLoading, isError, isSuccess, errorMsg } = useSelector(
-    (state) => state.auth,
+    (state: RootState) => state.auth,
   );
 
   if (!isOpen) {
@@ -192,12 +190,12 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
       <Overlay></Overlay>
 
       <Modal
-        left={["20px", "20px", "40px"]}
-        right={["20px", "20px", "40px"]}
         maxWidth={["auto", "auto", "auto", "800px"]}
         sx={{
           marginInline: "auto",
         }}
+        right={["20px", "20px", "40px"]}
+        left={["20px", "20px", "40px"]}
       >
         <Header as="header" fontSize={["28px"]}>
           <FaSpotify color="white" size={45} />
@@ -333,14 +331,14 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin, setIsLogin }: LoginProps) => {
             {isLogin ? (
               <BottomText color="textPrimary">
                 Not Joined Us Yet?
-                <TextButton onClick={() => setIsLogin(false)}>
+                <TextButton onClick={() => setIsLogin && setIsLogin(false)}>
                   SignUp
                 </TextButton>
               </BottomText>
             ) : (
               <BottomText color="textPrimary">
                 Already on Nikofy?
-                <TextButton onClick={() => setIsLogin(true)}>LogIn</TextButton>
+                <TextButton onClick={() => setIsLogin && setIsLogin(true)}>LogIn</TextButton>
               </BottomText>
             )}
           </InputContainer>
