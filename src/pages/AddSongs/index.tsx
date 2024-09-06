@@ -19,6 +19,7 @@ import {
   addSongRequest,
   editSongReq,
   setSongForUpdate,
+  searchRequestForAdd,
 } from "../../app/features/song/songSlice";
 import SearchResult from "../../components/SearchResult/SearchResult";
 import "../../App.css";
@@ -87,7 +88,7 @@ const AddSong = ({ isEdit }: AddSongProps) => {
     dispatch(reset());
     setQuery(e.target.value);
     dispatch(setSearchQuery(e.target.value));
-    dispatch(searchRequest());
+    dispatch(searchRequestForAdd());
   };
 
   const [openModal, setOpenModal] = useState(false);

@@ -45,7 +45,7 @@ const initialState: SongState = {
   songId: null,
   fetchRecentState: "",
   searchResults: [],
-  genreSongs: []
+  genreSongs: [],
 };
 
 const songSlice = createSlice({
@@ -56,7 +56,15 @@ const songSlice = createSlice({
       state.isLoading = true;
       state.currentState = "SEARCH";
     },
-
+    searchRequestForAdd: (state) => {
+      state.isLoading = true;
+      state.currentState = "SEARCH_FOR_ADD";
+    },
+    searchRequestForAddSuccess: (state, action: PayloadAction<Song[]>) => {
+      state.songs = action.payload;
+      state.isSuccess = true;
+      state.isLoading = false;
+    },
     searchRequestSuccess: (state, action: PayloadAction<Song[]>) => {
       state.songs = action.payload;
       state.isSuccess = true;
@@ -296,6 +304,8 @@ export const {
   getFavsSuccess,
   searchSongsSuccess,
   searchSongsFailure,
+  searchRequestForAdd,
+  searchRequestForAddSuccess,
 } = songSlice.actions;
 
 export default songSlice.reducer;

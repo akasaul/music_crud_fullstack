@@ -15,6 +15,7 @@ import getMySongsSaga from "./song/getMySongsSaga";
 import addToFavSaga from "./song/favSongsSaga";
 import removeFromFavRequestSaga from "./song/removeFavSongsSaga";
 import getFavsSaga from "./song/getFavsSaga";
+import searchRequestForAddSaga from "./song/searchSongForAddSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -34,5 +35,6 @@ export default function* rootSaga() {
     removeFromFavRequestSaga(),
     searchSongsSaga(),
     getFavsSaga(),
+    searchRequestForAddSaga(),
   ]);
 }
