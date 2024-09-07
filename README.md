@@ -1,6 +1,6 @@
 # Music CRUD With React, Typescript, Redux saga and Express
 
-Song app made for addis software internship intrance project.
+Song app made for addis software fullstack developer test project.
 The Project's UI is somewhat inspired by spotify.
 
 ![Project Home Screenshot - 1](https://user-images.githubusercontent.com/97656710/236034803-1880fbb3-0d17-403f-a47c-f9de24443720.png)
