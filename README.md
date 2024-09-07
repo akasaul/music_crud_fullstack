@@ -1,4 +1,4 @@
-# Music CRUD With React, Redux saga and firebase
+# Music CRUD With React, Typescript, Redux saga and Express
 
 Song app made for addis software internship intrance project.
 The Project's UI is somewhat inspired by spotify.
@@ -7,9 +7,10 @@ The Project's UI is somewhat inspired by spotify.
 
 ![Adding songs from simple search](https://user-images.githubusercontent.com/97656710/236035289-a73bfcde-5a8f-46a7-bee4-9596956c5e2b.png)
 
-![Analytics](https://user-images.githubusercontent.com/97656710/236035289-a73bfcde-5a8f-46a7-bee4-9596956c5e2b.png)
+![Analytics]((https://github.com/user-attachments/assets/df35cdff-4636-4a4f-ac02-f5edc99fc9d7)
+)
 
-You can [See live](https://music-app-niko.vercel.app/)
+You can [See live]([(https://music-crud-fullstack.vercel.app/))
 
 ## Technologies
 
