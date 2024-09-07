@@ -18,10 +18,7 @@ import { Box, Flex, Text } from "rebass";
 import { color, display, fontSize, position } from "styled-system";
 import { Image } from "theme-ui";
 import { stopSong } from "../../app/features/song/songSlice";
-import { setFavsReq } from "../../app/features/user/userSlice";
-import useAuthStatus from "../../hooks/useAuthStatus";
 import { formatTime } from "../../utils/formatTime";
-// import LoginModal from "../LoginModal";
 import "./songPlayfooter.css";
 import LoginModal from "../LoginModal";
 import { RootState } from "../../app";
@@ -79,7 +76,6 @@ const SongPlayerFooter = () => {
 
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
-  const { isLoggedIn } = useAuthStatus();
 
   const { song, isPlaying } = useSelector((state: RootState) => state.song);
   const navigate = useNavigate();
@@ -114,16 +110,18 @@ const SongPlayerFooter = () => {
   return (
     <>
       <SongPlayer
-        bottom={["60px", "0px"]}
+        sx={{
+          bottom: ["60px", "0px"],
+        }}
         bg={"primary"}
         color={"textPrimary"}
         display={["flex", "flex", "none"]}
       >
         <Image
-          src={song.imageUrl}
+          src={song.coverImg}
           height={"100%"}
-          width={["40px", "70px"]}
-          className={play && "play_rotate"}
+          width={"40px"}
+          className={play ? "play_rotate" : ""}
           sx={{
             borderRadius: play ? "50%" : "10px",
           }}
@@ -168,11 +166,11 @@ const SongPlayerFooter = () => {
       </SongPlayer>
 
       <SongPlayerDesktop
-        bottom={["60px", "0px"]}
         bg={"primary"}
         color={"textPrimary"}
         display={["none", "none", "flex"]}
         sx={{
+          bottom: ["60px", "0px"],
           height: expand ? "135px" : "80px",
           zIndex: 10,
         }}

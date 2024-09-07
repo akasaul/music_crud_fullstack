@@ -1,11 +1,10 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   MdDelete,
   MdEdit,
   MdFavorite,
   MdFavoriteBorder,
-  MdMore,
   MdMoreVert,
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +22,7 @@ import { formatTime } from "../../utils/formatTime";
 import LoginModal from "../LoginModal";
 import "./SongTile.css";
 import { LibSong } from "../../app/types/song";
+import { RootState } from "../../app";
 
 interface SongTileProps {
   song: LibSong;
@@ -77,7 +77,7 @@ const SongTile = ({
     ${fontWeight}
   `;
 
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth } = useSelector((state: RootState) => state.auth);
 
   // Song duration formatted
   const time = formatTime(duration);

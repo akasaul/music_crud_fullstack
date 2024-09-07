@@ -1,0 +1,134 @@
+
+const popularSongs = [
+  { name: "Song A", plays: 500 },
+  { name: "Song B", plays: 300 },
+  // More songs...
+];
+
+const prolificArtists = [
+  { name: "Artist A", songCount: 20 },
+  { name: "Artist B", songCount: 15 },
+  // More artists...
+];
+
+const avgSongsPerAlbum = [30, 50, 20]; // Percentages or counts for 1-3, 4-6, 7-10 songs per album.
+
+const latestSongs = [
+  { date: "2023-08-01", count: 5 },
+  { date: "2023-08-05", count: 7 },
+  // More date entries...
+];
+
+<StatsChart
+  popularSongs={popularSongs}
+  prolificArtists={prolificArtists}
+  avgSongsPerAlbum={avgSongsPerAlbum}
+  latestSongs={latestSongs}
+/>;
+
+
+
+
+
+import React from 'react';
+import { Bar, HorizontalBar, Pie, Line } from 'react-chartjs-2';
+import './StatsChart.css'; // Import the styles
+
+const StatsChart = ({ popularSongs, prolificArtists, avgSongsPerAlbum, latestSongs }) => {
+  // Data and options for each chart
+  const barData = {
+    labels: popularSongs.map(song => song.name),
+    datasets: [{
+      label: 'Most Popular Songs',
+      data: popularSongs.map(song => song.plays),
+      backgroundColor: 'rgba(0, 128, 0, 0.6)',
+      borderColor: 'rgba(0, 128, 0, 1)',
+      borderWidth: 1,
+    }],
+  };
+
+  const horizontalBarData = {
+    labels: prolificArtists.map(artist => artist.name),
+    datasets: [{
+      label: 'Most Prolific Artists',
+      data: prolificArtists.map(artist => artist.songCount),
+      backgroundColor: 'rgba(0, 128, 0, 0.6)',
+      borderColor: 'rgba(0, 128, 0, 1)',
+      borderWidth: 1,
+    }],
+  };
+
+  const pieData = {
+    labels: ['1-3 Songs', '4-6 Songs', '7-10 Songs'],
+    datasets: [{
+      label: 'Average Songs Per Album',
+      data: avgSongsPerAlbum,
+      backgroundColor: ['rgba(0, 128, 0, 0.6)', 'rgba(34, 139, 34, 0.6)', 'rgba(144, 238, 144, 0.6)'],
+      borderColor: ['rgba(0, 128, 0, 1)', 'rgba(34, 139, 34, 1)', 'rgba(144, 238, 144, 1)'],
+      borderWidth: 1,
+    }],
+  };
+
+  const lineData = {
+    labels: latestSongs.map(song => song.date),
+    datasets: [{
+      label: 'Latest Songs',
+      data: latestSongs.map(song => song.count),
+      backgroundColor: 'rgba(0, 128, 0, 0.2)',
+      borderColor: 'rgba(0, 128, 0, 1)',
+      borderWidth: 2,
+      fill: true,
+    }],
+  };
+
+  return (
+    <div className="stats-chart-container">
+      <div className="chart-item">
+        <h3>Most Popular Songs</h3>
+        <Bar data={barData} options={{ responsive: true, maintainAspectRatio: false }} />
+      </div>
+      <div className="chart-item">
+        <h3>Most Prolific Artists</h3>
+        <HorizontalBar data={horizontalBarData} options={{ responsive: true, maintainAspectRatio: false }} />
+      </div>
+      <div className="chart-item">
+        <h3>Average Songs Per Album</h3>
+        <Pie data={pieData} options={{ responsive: true, maintainAspectRatio: false }} />
+      </div>
+      <div className="chart-item">
+        <h3>Latest Songs</h3>
+        <Line data={lineData} options={{ responsive: true, maintainAspectRatio: false }} />
+      </div>
+    </div>
+  );
+};
+
+export default StatsChart;
+
+
+
+.stats-chart-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.chart-item {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  height: 400px;
+}
+
+.chart-item h3 {
+  color: #006400;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}

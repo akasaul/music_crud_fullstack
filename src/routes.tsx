@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
+import Analytics from "./pages/Analytics";
 
 const Home = lazy(() => import("./pages/Home"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -27,7 +28,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: "/analytics",
-    element: <Library />,
+    element: <Analytics />,
   },
   {
     path: "/favorites",

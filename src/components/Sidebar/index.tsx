@@ -95,7 +95,7 @@ const index = () => {
           </Box>
         </ListTile>
 
-        <ListTile text={"Library"} link={"/library"} askLogin={true}>
+        <ListTile text={"Library"} link={"/library"}>
           {/* display d/t Icon sizes at view ports */}
           <Box display={["none", "block", "none"]}>
             <MdOutlineLibraryMusic className="btn" size={36} color="#B3B3B3" />
@@ -132,4 +132,3 @@ const index = () => {
 };
 
 export default index;
-

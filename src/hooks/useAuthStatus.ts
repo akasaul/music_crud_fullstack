@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
 import { getItem } from "../lib/localStorage";
 
 const useAuthStatus = () => {

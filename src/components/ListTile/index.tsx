@@ -14,7 +14,13 @@ import styled from "@emotion/styled";
 import { Link } from "rebass";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const ListTile = ({ text, link, children }) => {
+interface ListTileProps {
+  text: string;
+  link: string;
+  children: React.ReactNode;
+}
+
+const ListTile = ({ text, link, children }: ListTileProps) => {
   const location = useLocation();
 
   type TileTextProps = ColorProps &
@@ -75,4 +81,3 @@ const ListTile = ({ text, link, children }) => {
 };
 
 export default ListTile;
-

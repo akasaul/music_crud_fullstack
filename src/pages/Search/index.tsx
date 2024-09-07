@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { MdClose, MdSearch } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Flex, Image, Text } from "rebass";
@@ -37,8 +37,7 @@ const Search = () => {
 
   const [query, setQuery] = useState("");
 
-  //FIX: get e types
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
     dispatch(setSearchQuery(query));
     dispatch(searchSong());

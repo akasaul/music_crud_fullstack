@@ -5,6 +5,15 @@ import styled from "@emotion/styled";
 import { ThemeProvider } from "@emotion/react";
 import theme from "./theme";
 import "./App.css";
+import {
+  Chart as ChartJs,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+  Title,
+} from "chart.js/auto";
 
 import {
   color,
@@ -27,6 +36,15 @@ import { Spinner } from "theme-ui";
 import { RootState } from "./app";
 
 const App: React.FC = () => {
+  ChartJs.register(
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Tooltip,
+    Legend,
+    Title,
+  );
+
   const { isAuth } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 

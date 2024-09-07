@@ -57,3 +57,8 @@ export const searchSongs = async (query: string) => {
   const songs = await api.get<LibSong[]>(`/songs/search?query=${query}`);
   return songs;
 };
+
+export const deleteSong = async (id: string) => {
+  const songs = await api.delete<LibSong[]>(`/songs/${id}`);
+  return songs;
+};

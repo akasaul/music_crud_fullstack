@@ -22,7 +22,6 @@ const SearchResult = ({
   album,
   genre,
   onSetValues,
-  formData,
 }: SearchResultProps) => {
   const Container = styled(Box)`
     background: #323232;
@@ -69,7 +68,7 @@ const SearchResult = ({
     time = formatTime(duration);
   }
 
-  const handleClick = (e) => {
+  const handleClick = () => {
     onSetValues({
       title,
       duration: duration.toString(),
@@ -120,4 +119,3 @@ const SearchResult = ({
 };
 
 export default SearchResult;
-

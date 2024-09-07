@@ -6,9 +6,10 @@ import {
   maxWidth,
   position,
   width,
-  variant,
   color,
   left,
+  PositionProps,
+  ResponsiveValue,
 } from "styled-system";
 import {
   MdOutlineAccountCircle,
@@ -16,7 +17,7 @@ import {
   MdVisibility,
   MdVisibilityOff,
 } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input, Spinner } from "theme-ui";
 import BaseInputWrapper from "../BaseInput";
 import SubmitButton from "../Buttons/SubmitButton";
@@ -25,7 +26,6 @@ import {
   setUserData,
   signInRequest,
   signUpRequest,
-  setIsAuth,
 } from "../../app/features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -45,9 +45,24 @@ interface LoginProps {
   setIsLogin?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const LoginModal = ({ isOpen, setIsOpen, isLogin = true, setIsLogin }: LoginProps) => {
-  const BaseInput = styled(Input)`
-    ${variant}
+const LoginModal = ({
+  isOpen,
+  setIsOpen,
+  isLogin = true,
+  setIsLogin,
+}: LoginProps) => {
+  useEffect(() => {
+    return () => {
+      setIsOpen(false);
+    };
+  }, []);
+
+  interface BaseInputProps {
+    variant?: "primary" | "secondary";
+    fontSize?: ResponsiveValue<string>;
+  }
+
+  const BaseInput = styled(Input)<BaseInputProps>`
     ${color}
     ${fontSize}
     &:focus {
@@ -72,7 +87,7 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin = true, setIsLogin }: LoginProp
     z-index: 1;
   `;
 
-  const Modal = styled(Box)`
+  const Modal = styled(Box)<PositionProps>`
     ${position}
     ${left}
     min-width: 300px;
@@ -104,22 +119,32 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin = true, setIsLogin }: LoginProp
     padding: 24px;
   `;
 
-  const HeaderText = styled.h2`
+  interface SizeProps {
+    maxWidth?: ResponsiveValue<string>;
+    fontSize?: ResponsiveValue<string>;
+  }
+
+  const HeaderText = styled.h2<SizeProps>`
     ${fontSize}
     ${width}
     ${maxWidth}
     ${position}
-    text-align: center;
+  text-align: center;
     color: white;
   `;
 
-  const HeaderSub = styled.h2`
+  interface HeaderSubProps {
+    fontSize?: ResponsiveValue<string>;
+  }
+
+  const HeaderSub = styled.h2<HeaderSubProps>`
     ${fontSize}
     ${width}
     ${maxWidth}
     text-align: center;
     color: white;
   `;
+
   const InputContainer = styled(Flex)`
     ${maxWidth}
     gap: 15px;
@@ -149,15 +174,17 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin = true, setIsLogin }: LoginProp
 
   const dispatch = useDispatch();
 
-  const { isLoading, isError, isSuccess, errorMsg } = useSelector(
+  const { isLoading, isError, isAuth, errorMsg } = useSelector(
     (state: RootState) => state.auth,
   );
+
+  console.log("hello from modal");
 
   if (!isOpen) {
     return;
   }
 
-  if (isSuccess) {
+  if (isAuth) {
     return;
   }
 
@@ -170,7 +197,6 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin = true, setIsLogin }: LoginProp
       }),
     );
     dispatch(signInRequest());
-    dispatch(setIsAuth());
   };
 
   const onSignUpSubmit = ({ email, password, name }: SignUpBody) => {
@@ -182,7 +208,6 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin = true, setIsLogin }: LoginProp
       }),
     );
     dispatch(signUpRequest());
-    dispatch(setIsAuth());
   };
 
   return (
@@ -338,7 +363,9 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin = true, setIsLogin }: LoginProp
             ) : (
               <BottomText color="textPrimary">
                 Already on Nikofy?
-                <TextButton onClick={() => setIsLogin && setIsLogin(true)}>LogIn</TextButton>
+                <TextButton onClick={() => setIsLogin && setIsLogin(true)}>
+                  LogIn
+                </TextButton>
               </BottomText>
             )}
           </InputContainer>
@@ -491,14 +518,16 @@ const LoginModal = ({ isOpen, setIsOpen, isLogin = true, setIsLogin }: LoginProp
             {isLogin ? (
               <BottomText color="textPrimary">
                 Not Joined Us Yet?
-                <TextButton onClick={() => setIsLogin(false)}>
+                <TextButton onClick={() => setIsLogin && setIsLogin(false)}>
                   SignUp
                 </TextButton>
               </BottomText>
             ) : (
               <BottomText color="textPrimary">
                 Already on Nikofy?
-                <TextButton onClick={() => setIsLogin(true)}>LogIn</TextButton>
+                <TextButton onClick={() => setIsLogin && setIsLogin(true)}>
+                  LogIn
+                </TextButton>
               </BottomText>
             )}
           </InputContainer>

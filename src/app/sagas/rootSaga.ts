@@ -2,7 +2,7 @@ import { all } from "redux-saga/effects";
 import signUpSaga from "./auth/signUp";
 import signInSaga from "./auth/signIn";
 import addSong from "./song/addSongSaga";
-import deleteSong from "./song/deleteSongSaga";
+import deleteSongSaga from "./song/deleteSongSaga";
 import setUserSaga from "./user/setUser";
 import editSong from "./song/editSongSaga";
 import favSong from "./song/favSongSaga";
@@ -16,12 +16,16 @@ import addToFavSaga from "./song/favSongsSaga";
 import removeFromFavRequestSaga from "./song/removeFavSongsSaga";
 import getFavsSaga from "./song/getFavsSaga";
 import searchRequestForAddSaga from "./song/searchSongForAddSaga";
+import getStatsOverviewSaga from "./stats/overview";
+import getSongPerGenreSaga from "./stats/songPerGenre";
+import getSongsAlbumsPerArtistSaga from "./stats/getSongsAlbumsPerArtist";
+import getSongsPerAlbumSaga from "./stats/getSongsPerAlbum";
 
 export default function* rootSaga() {
   yield all([
     setUserSaga(),
     addSong(),
-    deleteSong(),
+    deleteSongSaga(),
     signUpSaga(),
     signInSaga(),
     editSong(),
@@ -36,5 +40,9 @@ export default function* rootSaga() {
     searchSongsSaga(),
     getFavsSaga(),
     searchRequestForAddSaga(),
+    getStatsOverviewSaga(),
+    getSongPerGenreSaga(),
+    getSongsAlbumsPerArtistSaga(),
+    getSongsPerAlbumSaga(),
   ]);
 }

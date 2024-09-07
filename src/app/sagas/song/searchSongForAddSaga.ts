@@ -6,14 +6,6 @@ import {
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { RootState } from "../..";
 
-interface ApiResponse {
-  data: {
-    data: Array<{
-      type: string;
-    }>;
-  };
-}
-
 // Worker function
 function* workSearch() {
   try {
@@ -35,14 +27,14 @@ function* workSearch() {
       },
     };
 
-    const res: AxiosResponse<ApiResponse> = yield call(() =>
-      axios.request(options),
-    );
+    const res: AxiosResponse<any> = yield call(() => axios.request(options));
 
     let formattedResponse: Array<any> = []; // Adjust the type based on your expected data
 
     if (res.status === 200) {
-      formattedResponse = res.data.data.filter((item) => item.type === "track");
+      formattedResponse = res.data.data.filter(
+        (item: any) => item.type === "track",
+      );
       formattedResponse = formattedResponse.slice(0, 10);
       yield put(searchRequestForAddSuccess(formattedResponse));
     } else {

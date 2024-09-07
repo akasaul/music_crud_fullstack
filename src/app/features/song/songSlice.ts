@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LibSong, Song } from "../../types/song";
+import { LibSong, ApiSearchSong, Song } from "../../types/song";
 import { AddSongBody } from "../../../lib/validation";
 
 interface SongState {
@@ -23,6 +23,7 @@ interface SongState {
   songId: string | null;
   fetchRecentState: string;
   searchResults: Song[];
+  apiSearchResults: ApiSearchSong[];
 }
 
 const initialState: SongState = {
@@ -46,6 +47,7 @@ const initialState: SongState = {
   fetchRecentState: "",
   searchResults: [],
   genreSongs: [],
+  apiSearchResults: [],
 };
 
 const songSlice = createSlice({
@@ -60,8 +62,11 @@ const songSlice = createSlice({
       state.isLoading = true;
       state.currentState = "SEARCH_FOR_ADD";
     },
-    searchRequestForAddSuccess: (state, action: PayloadAction<Song[]>) => {
-      state.songs = action.payload;
+    searchRequestForAddSuccess: (
+      state,
+      action: PayloadAction<ApiSearchSong[]>,
+    ) => {
+      state.apiSearchResults = action.payload;
       state.isSuccess = true;
       state.isLoading = false;
     },

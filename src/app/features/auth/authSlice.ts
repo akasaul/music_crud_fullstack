@@ -50,11 +50,13 @@ const authSlice = createSlice({
     signUpSuccess: (state, action: PayloadAction<AuthPayload>) => {
       state.auth = action.payload;
       state.isLoading = false;
+      state.isSuccess = true;
       state.errorMsg = "";
     },
     signUpFailure: (state, action: PayloadAction<string>) => {
       state.isError = true;
       state.isLoading = false;
+      state.isSuccess = false;
       state.errorMsg = action.payload;
     },
 
@@ -73,16 +75,20 @@ const authSlice = createSlice({
       state.auth = action.payload;
       state.isLoading = false;
       state.isSuccess = true;
+      state.errorMsg = "";
+      state.isError = false;
     },
     signInFailure: (state, action: PayloadAction<string>) => {
       state.isError = true;
       state.isLoading = false;
+      state.isSuccess = false;
       state.errorMsg = action.payload;
     },
 
     // Sign out
     signOut: (state) => {
       state.auth = null;
+      state.isAuth = false;
     },
 
     // Reset all states

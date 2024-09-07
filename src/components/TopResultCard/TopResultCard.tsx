@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { MdPlayArrow, MdPlayCircle } from "react-icons/md";
+import { MdPlayArrow } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { Box, Image, Heading, Text, Button } from "rebass";
 import { color, fontFamily, fontSize } from "styled-system";
@@ -92,7 +92,9 @@ const TopResultCard = ({
       color="textPrimary"
       p="25px"
       bg="cardDark"
-      position="relative"
+      sx={{
+        position: "relative",
+      }}
     >
       <Image
         height="120px"
@@ -129,4 +131,3 @@ const TopResultCard = ({
 };
 
 export default TopResultCard;
-

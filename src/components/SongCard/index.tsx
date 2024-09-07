@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { MdPlayArrow, MdPlayCircle } from "react-icons/md";
+import { MdPlayArrow } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { Box, Button, Flex, Image, Text } from "rebass";
 import { color, fontSize, fontWeight } from "styled-system";

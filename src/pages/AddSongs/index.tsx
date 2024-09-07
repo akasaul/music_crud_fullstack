@@ -7,13 +7,12 @@ import {
   MdTimer,
 } from "react-icons/md";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Box, Container, Flex, Image, Input, Spinner, Text } from "theme-ui";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
   reset,
-  searchRequest,
   setSearchQuery,
   setSong,
   addSongRequest,
@@ -79,12 +78,18 @@ const AddSong = ({ isEdit }: AddSongProps) => {
   const [query, setQuery] = useState("");
 
   // States from song slice
-  const { songs, isLoading, isSuccess, isError, currentState, errorMsg } =
-    useSelector((state: RootState) => state.song);
+  const {
+    apiSearchResults,
+    isLoading,
+    isSuccess,
+    isError,
+    currentState,
+    errorMsg,
+  } = useSelector((state: RootState) => state.song);
 
   const dispatch = useDispatch();
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(reset());
     setQuery(e.target.value);
     dispatch(setSearchQuery(e.target.value));
@@ -173,7 +178,7 @@ const AddSong = ({ isEdit }: AddSongProps) => {
             />
             <MdSearch color="white" size={24} />
 
-            {songs.length > 0 && query.length > 0 && (
+            {apiSearchResults.length > 0 && query.length > 0 && (
               <Box
                 sx={{
                   position: "absolute",
@@ -189,8 +194,7 @@ const AddSong = ({ isEdit }: AddSongProps) => {
                 {isLoading && !isSuccess ? (
                   <Spinner color="green" />
                 ) : (
-                  // FIX: fix types here
-                  songs.map((song) => (
+                  apiSearchResults.map((song) => (
                     <SearchResult
                       key={song?.id}
                       title={song?.title}
@@ -198,7 +202,7 @@ const AddSong = ({ isEdit }: AddSongProps) => {
                       artist={song?.artist?.name || song?.artist}
                       duration={song?.duration}
                       album={song?.album?.title || song?.album}
-                      // setFormData={setFormData}
+                      genre="Pop"
                       onSetValues={onSetValues}
                       formData={{
                         title: watch("title"),

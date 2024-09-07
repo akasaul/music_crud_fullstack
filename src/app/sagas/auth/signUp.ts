@@ -1,10 +1,11 @@
 import { call, put, select, takeEvery } from "redux-saga/effects";
 import {
+  setIsAuth,
   signUpFailure,
   signUpRequest,
   signUpSuccess,
 } from "../../features/auth/authSlice";
-import { AuthState, AuthResponse } from "./types";
+import { AuthState } from "./types";
 import { signUpUser } from "../../../services/api/user.service";
 import { setItem } from "../../../lib/localStorage";
 
@@ -21,6 +22,7 @@ function* workAuth() {
     yield put(signUpSuccess(data.user));
     setItem("token", data.access_token);
     setItem("name", data.user.name);
+    yield put(setIsAuth());
   } catch (err: any) {
     // Dispatch failure action with the error message
     console.log({ err });

@@ -1,4 +1,3 @@
-import { MdArrowLeft, MdArrowRight } from "react-icons/md";
 import { useSnapCarousel } from "react-snap-carousel";
 import BaseCard from "../BaseCard";
 import { Song } from "../../app/types/song";
