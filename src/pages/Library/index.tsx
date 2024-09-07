@@ -13,6 +13,7 @@ import {
 import SongTile from "../../components/SongTile/SongTile";
 import { LibSong } from "../../app/types/song";
 import { RootState } from "../../app";
+import { MdAccountCircle } from "react-icons/md";
 
 const Library = () => {
   const { mySongs, libSongs, isLoading, currentState } = useSelector(
@@ -93,6 +94,33 @@ const Library = () => {
       )}
 
       <LibraryHeader as="h3">All Songs</LibraryHeader>
+      {!isLoggedIn && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            height={"100px"}
+            src={
+              "https://cdn-icons-png.flaticon.com/512/408/408697.png?w=740&t=st=1683050602~exp=1683051202~hmac=b2742b98226da86801474ffa532a4b203cb68486ee2fb1780eba6c9275272bf9"
+            }
+          />
+          <Text
+            sx={{
+              color: "white",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            Login to see songs library <MdAccountCircle />
+          </Text>
+        </Box>
+      )}
 
       <SongsContainer>
         {isLoading && currentState === "GET_ALL" ? (

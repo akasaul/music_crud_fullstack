@@ -94,7 +94,16 @@ const index = () => {
             />
           </Box>
         </ListTile>
+        <ListTile text={"Analytics"} link={"/analytics"}>
+          {/* display d/t Icon sizes at view ports */}
+          <Box display={["none", "block", "none"]}>
+            <MdAnalytics className="btn" size={36} color="#B3B3B3" />
+          </Box>
 
+          <Box display={["none", "none", "block"]}>
+            <MdAnalytics className="btn" size={30} color="#B3B3B3" />
+          </Box>
+        </ListTile>
         <ListTile text={"Library"} link={"/library"}>
           {/* display d/t Icon sizes at view ports */}
           <Box display={["none", "block", "none"]}>
@@ -114,16 +123,6 @@ const index = () => {
 
           <Box display={["none", "none", "block"]}>
             <MdAdd className="btn" size={30} color="#B3B3B3" />
-          </Box>
-        </ListTile>
-        <ListTile text={"Analytics"} link={"/analytics"}>
-          {/* display d/t Icon sizes at view ports */}
-          <Box display={["none", "block", "none"]}>
-            <MdAnalytics className="btn" size={36} color="#B3B3B3" />
-          </Box>
-
-          <Box display={["none", "none", "block"]}>
-            <MdAnalytics className="btn" size={30} color="#B3B3B3" />
           </Box>
         </ListTile>
       </TopContainer>
