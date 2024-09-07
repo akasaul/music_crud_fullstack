@@ -3,12 +3,12 @@
 Song app made for addis software fullstack developer test project.
 The Project's UI is somewhat inspired by spotify.
 
+![Analytics](https://github.com/user-attachments/assets/df35cdff-4636-4a4f-ac02-f5edc99fc9d7)
+
 ![Project Home Screenshot - 1](https://user-images.githubusercontent.com/97656710/236034803-1880fbb3-0d17-403f-a47c-f9de24443720.png)
 
 ![Adding songs from simple search](https://user-images.githubusercontent.com/97656710/236035289-a73bfcde-5a8f-46a7-bee4-9596956c5e2b.png)
 
-![Analytics]((https://github.com/user-attachments/assets/df35cdff-4636-4a4f-ac02-f5edc99fc9d7)
-)
 
 You can [See live]([(https://music-crud-fullstack.vercel.app/))
 
