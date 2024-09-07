@@ -10,7 +10,7 @@ The Project's UI is somewhat inspired by spotify.
 ![Adding songs from simple search](https://user-images.githubusercontent.com/97656710/236035289-a73bfcde-5a8f-46a7-bee4-9596956c5e2b.png)
 
 
-You can [See live]([(https://music-crud-fullstack.vercel.app/))
+You can [See live](https://music-crud-fullstack.vercel.app/)
 
 ## Technologies
 
