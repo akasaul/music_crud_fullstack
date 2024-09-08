@@ -20,8 +20,8 @@ const song = {
   base: `${bases.song}`,
   library: `${bases.song}/library`,
   favorites: `${bases.song}/favorites`,
-  mySongs: `${bases.song}/library/my-songs"`,
-  searchSongs: `${bases.song}/search"`,
+  mySongs: `${bases.song}/library/my-songs`,
+  searchSongs: `${bases.song}/search`,
 };
 
 const apiRoutes = { user, stats, song };

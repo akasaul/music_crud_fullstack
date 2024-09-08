@@ -3,7 +3,6 @@ import { MdClose, MdSearch } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Flex, Image, Text } from "rebass";
 import { Container, Input, Spinner } from "theme-ui";
-// import { getAllReq, reset, searchSong } from "../app/features/song/songSlice";
 import SongTile from "../../components/SongTile/SongTile";
 import Slider from "../../components/slider/Slider";
 import styled from "@emotion/styled";
